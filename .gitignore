@@ -3,3 +3,4 @@ build
 dist
 pypefitter.egg-info
 venv
+__pycache__

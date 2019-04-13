@@ -3,8 +3,9 @@ language: python
 python:
   - "3.7"
 install:
-#  - pip install pipenv
+  - pip install pipenv
   - pipenv install --ignore-pipfile --dev
-# command to run tests
+before_script:
+  - flake8 pypefitter
 script:
-  - pytest
+  - pytest --cov=pypefitter

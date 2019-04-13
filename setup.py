@@ -58,7 +58,7 @@ setup(
     #
     # For an analysis of "install_requires" vs pip's requirements files see:
     # https://packaging.python.org/en/latest/requirements.html
-    #install_requires=['transitions'],
+    install_requires=['antlr4-python3-runtime'],
 
     # List additional groups of dependencies here (e.g. development
     # dependencies). Users will be able to install these using the "extras"
@@ -70,7 +70,7 @@ setup(
     # projects.
     extras_require={  # Optional
         # 'dev': ['check-manifest'],
-        'test': ['pytest', 'coverage', 'pytest-cov'],
+        'test': ['pytest', 'coverage', 'pytest-cov', 'flake8'],
     },
 
     # If there are data files included in your packages that need to be

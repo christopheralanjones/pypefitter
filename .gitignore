@@ -1,4 +1,6 @@
+.coverage
 .idea
+.xml
 build
 dist
 pypefitter.egg-info

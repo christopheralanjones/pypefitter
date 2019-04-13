@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/<github username>/<repo name>.svg?branch=master)](https://travis-ci.org/christopheralanjones/pypefitter)
+[![Build Status](https://travis-ci.org/christopheralanjones/pypefitter.svg?branch=master)](https://travis-ci.org/christopheralanjones/pypefitter)
 [![Maintainability](https://api.codeclimate.com/v1/badges/46901ac1073649af704c/maintainability)](https://codeclimate.com/github/christopheralanjones/pypefitter/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/46901ac1073649af704c/test_coverage)](https://codeclimate.com/github/christopheralanjones/pypefitter/test_coverage)
 # pypefitter

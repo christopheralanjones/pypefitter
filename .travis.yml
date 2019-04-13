@@ -1,3 +1,6 @@
+# NOTES:
+# 1. We need an ID for code climate -- that's exposed as an environment
+#    variable within travis so we don't need to embed it here.
 dist: xenial   # required for Python >= 3.7
 language: python
 python:
@@ -7,5 +10,10 @@ install:
   - pipenv install --ignore-pipfile --dev
 before_script:
   - flake8 pypefitter
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - ./cc-test-reporter before-build
 script:
   - pytest --cov=pypefitter
+after_script:
+  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT

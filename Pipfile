@@ -4,10 +4,10 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
-pytest = "*"
-coverage = "*"
-pytest-cov = "*"
-flake8 = "*"
+pytest = "==4.4.0"
+coverage = "==4.5.3"
+pytest-cov = "==2.6.1"
+flake8 = "==3.7.7"
 
 [packages]
 antlr4-python3-runtime = "==4.7.2"

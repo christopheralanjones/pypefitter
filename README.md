@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/<github username>/<repo name>.svg?branch=master)](https://travis-ci.org/christopheralanjones/pypefitter)
+[![Maintainability](https://api.codeclimate.com/v1/badges/46901ac1073649af704c/maintainability)](https://codeclimate.com/github/christopheralanjones/pypefitter/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/46901ac1073649af704c/test_coverage)](https://codeclimate.com/github/christopheralanjones/pypefitter/test_coverage)
 # pypefitter
 PypeFitter is a python-based software delivery pipeline generator. The goal is to allow for an abstract software delivery pipeline to be turned into concrete, executable implementations for providers like Jenkins or AWS.
 

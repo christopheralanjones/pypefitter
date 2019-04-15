@@ -1,4 +1,4 @@
-grammar pypefitter;
+grammar Pypefitter;
 
 /*
 ** PIPELINE

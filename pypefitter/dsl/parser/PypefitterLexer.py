@@ -1,4 +1,4 @@
-# Generated from C:/Users/cj123/Documents/Github/pypefitter/antlr4\pypefitter.g4 by ANTLR 4.7.2
+# Generated from C:/Users/cj123/Documents/Github/pypefitter/antlr4\Pypefitter.g4 by ANTLR 4.7.2
 from antlr4 import *
 from io import StringIO
 from typing.io import TextIO
@@ -41,7 +41,7 @@ def serializedATN():
         return buf.getvalue()
 
 
-class pypefitterLexer(Lexer):
+class PypefitterLexer(Lexer):
 
     atn = ATNDeserializer().deserialize(serializedATN())
 
@@ -77,7 +77,7 @@ class pypefitterLexer(Lexer):
                   "LBRACK", "RBRACK", "SEMI", "COMMA", "DOT", "Identifier", 
                   "Letter", "LetterOrDigit", "WS", "COMMENT" ]
 
-    grammarFileName = "pypefitter.g4"
+    grammarFileName = "Pypefitter.g4"
 
     def __init__(self, input=None, output:TextIO = sys.stdout):
         super().__init__(input, output)

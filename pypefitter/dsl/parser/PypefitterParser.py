@@ -1,4 +1,4 @@
-# Generated from C:/Users/cj123/Documents/Github/pypefitter/antlr4\pypefitter.g4 by ANTLR 4.7.2
+# Generated from C:/Users/cj123/Documents/Github/pypefitter/antlr4\Pypefitter.g4 by ANTLR 4.7.2
 # encoding: utf-8
 from antlr4 import *
 from io import StringIO
@@ -14,9 +14,9 @@ def serializedATN():
         return buf.getvalue()
 
 
-class pypefitterParser ( Parser ):
+class PypefitterParser ( Parser ):
 
-    grammarFileName = "pypefitter.g4"
+    grammarFileName = "Pypefitter.g4"
 
     atn = ATNDeserializer().deserialize(serializedATN())
 
@@ -66,40 +66,38 @@ class pypefitterParser ( Parser ):
             self.parser = parser
 
         def PYPEFITTER(self):
-            return self.getToken(pypefitterParser.PYPEFITTER, 0)
+            return self.getToken(PypefitterParser.PYPEFITTER, 0)
 
         def LBRACE(self):
-            return self.getToken(pypefitterParser.LBRACE, 0)
+            return self.getToken(PypefitterParser.LBRACE, 0)
 
         def RBRACE(self):
-            return self.getToken(pypefitterParser.RBRACE, 0)
+            return self.getToken(PypefitterParser.RBRACE, 0)
 
         def getRuleIndex(self):
-            return pypefitterParser.RULE_pypefitter
+            return PypefitterParser.RULE_pypefitter
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterPypefitter" ):
-                listener.enterPypefitter(self)
-
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitPypefitter" ):
-                listener.exitPypefitter(self)
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitPypefitter" ):
+                return visitor.visitPypefitter(self)
+            else:
+                return visitor.visitChildren(self)
 
 
 
 
     def pypefitter(self):
 
-        localctx = pypefitterParser.PypefitterContext(self, self._ctx, self.state)
+        localctx = PypefitterParser.PypefitterContext(self, self._ctx, self.state)
         self.enterRule(localctx, 0, self.RULE_pypefitter)
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 2
-            self.match(pypefitterParser.PYPEFITTER)
+            self.match(PypefitterParser.PYPEFITTER)
             self.state = 3
-            self.match(pypefitterParser.LBRACE)
+            self.match(PypefitterParser.LBRACE)
             self.state = 4
-            self.match(pypefitterParser.RBRACE)
+            self.match(PypefitterParser.RBRACE)
         except RecognitionException as re:
             localctx.exception = re
             self._errHandler.reportError(self, re)

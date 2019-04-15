@@ -1,11 +1,22 @@
+import os
+import pypefitter
 import pytest
-import sys
-from pypefitter import pypefitter
 from typing import List
+
+
+
+@pytest.fixture
+def pf_file():
+    with open(f"{pypefitter.pf_default_file}", 'w') as pf_file:
+        pf_file.write('pypefitter { }')
+        pf_file.close()
+    yield pf_file
+    os.remove(f"{pypefitter.pf_default_file}")
 
 
 @pytest.mark.parametrize(
     'cli_params, expected', [
+        ([],                        True),
         (['-v'],                    True),
         (['-c'],                    False),
         (['-c', 'test'],            True),
@@ -19,7 +30,6 @@ from typing import List
         (['--provider'],            False),
         (['-p', 'jenkins'],         True),
         (['--provider', 'jenkins'], True),
-        (['--provider', 'jenkins'], True),
         (['-p', 'aws'],             True),
         (['--provider', 'aws'],     True),
     ]
@@ -30,3 +40,28 @@ def test_parse_cli_arguments(cli_params: List[str], expected: bool):
         assert parsed_args is not None
     else:
         assert parsed_args is None
+
+
+@pytest.mark.parametrize(
+    'cli_params, expected', [
+        ([],                        0),
+        (['-v'],                    0),
+        (['-c'],                    1),
+        (['-c', 'test'],            0),
+        (['--config'],              1),
+        (['--config', 'test'],      0),
+        (['-s'],                    1),
+        (['--src'],                 1),
+        (['-s', 'test'],            2),
+        (['--src', 'test'],         2),
+        (['-p'],                    1),
+        (['--provider'],            1),
+        (['-p', 'jenkins'],         0),
+        (['--provider', 'jenkins'], 0),
+        (['-p', 'aws'],             0),
+        (['--provider', 'aws'],     0),
+    ]
+)
+def test_main(cli_params: List[str], expected: bool, pf_file):
+    return_code = pypefitter.main(cli_params)
+    assert return_code == expected

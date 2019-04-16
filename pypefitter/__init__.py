@@ -11,10 +11,12 @@ from pypefitter.dsl.parser.PypefitterLexer import PypefitterLexer
 from pypefitter.dsl.parser.PypefitterParser import PypefitterParser
 from pypefitter.dsl.visitor import PypefitterVisitor
 from typing import List
+
+# do the basic logging configuration
 logging.basicConfig(format='%(asctime)-15s  %(message)s')
 logger = logging.getLogger('pypefitter')
 
-
+# this is a constant
 pf_default_file = 'pypefitter.pf'
 
 
@@ -25,26 +27,66 @@ def parse_cli_arguments(args_to_parse: List[str] = None) -> argparse.Namespace:
     """
 
     parsed_args = None
+
     try:
-        parser = argparse.ArgumentParser(
+        parser = argparse.ArgumentParser(prog='pypefitter',
             description='Run pypefitter to create a concrete pipeline.')
-        parser.add_argument('-s', '--src', dest='src', action='store',
+        parser.add_argument('-f', '--file', dest='file', action='store',
                             default=f"{pf_default_file}",
                             help='The file containing the pypefitter definition.')
         parser.add_argument('-p', '--provider', dest='provider', action='store',
                             default='jenkins', choices=['jenkins', 'aws'],
                             help='The provider to be used to create the pipeline.')
-        parser.add_argument('-v', dest='verbosity', action='count',
-                            default=2,
-                            help='The verbosity level of the logging.')
         parser.add_argument('-c', '--config', dest='config', action='store',
                             help='The provider-specific configuration file.')
-        if args_to_parse is None:
-            args_to_parse = []
-        parsed_args = parser.parse_args(args_to_parse)
+        parser.add_argument('-v', '--verbose', dest='verbosity', action='count', default=0,
+                            help='The verbosity level of the logging.')
+        parsed_args = parser.parse_args(args_to_parse) \
+            if args_to_parse is not None else parser.parse_args()
     except SystemExit:
         pass
     return parsed_args
+
+
+def parse_pypefitter_definition(args: argparse.Namespace, pf_content: str):
+    """
+    Parses a Pypefitter definition in the pf_content argument.
+    :param pf_content: A Pypefitter definition that we want to parse.
+    """
+    logger.info(f"Parse of Pypefitter file [{args.file}] started")
+    lexer = PypefitterLexer(InputStream(pf_content))
+    stream = CommonTokenStream(lexer)
+    parser = PypefitterParser(stream)
+    visitor = PypefitterVisitor()
+    visitor.visitPypefitter(parser.pypefitter())
+    logger.info(f"Parse of Pypefitter file [{args.file}] complete")
+
+
+def read_pypefitter_file(args: argparse.Namespace, pf_file_path: Path) -> str:
+    """
+    Reads the content of a Pypefitter file.
+    :param pf_file_path: The path to the file containing a Pypefitter
+    definition.
+    :return: The content of 'pf_file_path'.
+    """
+    logger.info(f"Using Pypefitter file [{args.file}]")
+    logger.info(f"Reading Pypefitter file [{args.file}]")
+    with pf_file_path.open('r') as pf_file:
+        pf_content = pf_file.read()
+    return pf_content
+
+
+def set_logging_level(args: argparse.Namespace) -> None:
+    """
+    Sets the logging level based on the arguments provided.
+    :param args: The arguments provided to the Pypefitter CLI.
+    """
+    # first things first -- set the logging level. we do this by
+    # starting at 'error' and working down. we never allow it go
+    # below 'debug' though since that would disable all logging
+    # and that would be bad.
+    log_level = (4 - args.verbosity) * 10 if args.verbosity < 4 else 10
+    logger.setLevel(log_level)
 
 
 def main(argv: List[str] = None) -> int:
@@ -58,17 +100,17 @@ def main(argv: List[str] = None) -> int:
     if args is None:
         return 1
 
+    # set the logging level
+    set_logging_level(args)
+
     # verify that the source file exists -- if not, there's not much
     # point in proceeding.
-    pf_decl_path = Path(args.src)
-    if not pf_decl_path.is_file():
-        logger.error(f"Pypefitter file [{args.src}] does not exist")
+    pf_file_path = Path(args.file)
+    if not pf_file_path.is_file():
+        logger.error(f"Pypefitter file [{args.file}] does not exist")
         return 2
 
-    logger.info(f"Using Pypefitter file [{args.src}]")
-    lexer = PypefitterLexer(InputStream(args.src))
-    stream = CommonTokenStream(lexer)
-    parser = PypefitterParser(stream)
-    visitor = PypefitterVisitor()
-    visitor.visitPypefitter(parser.pypefitter())
+    # read and parse the pypefitter definition
+    pf_content = read_pypefitter_file(args, pf_file_path)
+    parse_pypefitter_definition(args, pf_content)
     return 0

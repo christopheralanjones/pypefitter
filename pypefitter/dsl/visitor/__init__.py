@@ -12,6 +12,5 @@ class PypefitterVisitor(PypefitterVisitor):
     """
 
     def visitPypefitter(self, ctx: PypefitterParser.PypefitterContext) -> None:
-        print('pypefitter found')
         return super().visitPypefitter(ctx)
 

@@ -30,7 +30,7 @@ def parse_cli_arguments(args_to_parse: List[str] = None) -> argparse.Namespace:
 
     try:
         parser = argparse.ArgumentParser(prog='pypefitter',
-            description='Run pypefitter to create a concrete pipeline.')
+                                         description='Run pypefitter to create a concrete pipeline.')
         parser.add_argument('-f', '--file', dest='file', action='store',
                             default=f"{pf_default_file}",
                             help='The file containing the pypefitter definition.')
@@ -41,6 +41,9 @@ def parse_cli_arguments(args_to_parse: List[str] = None) -> argparse.Namespace:
                             help='The provider-specific configuration file.')
         parser.add_argument('-v', '--verbose', dest='verbosity', action='count', default=0,
                             help='The verbosity level of the logging.')
+        # parser.add_argument(dest='command', choices=['validate', 'generate'], action='store',
+        #                     default='generate',
+        #                     help='The action to take with the pypefitter file.')
         parsed_args = parser.parse_args(args_to_parse) \
             if args_to_parse is not None else parser.parse_args()
     except SystemExit:

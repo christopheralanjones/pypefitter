@@ -31,19 +31,15 @@ def parse_cli_arguments(args_to_parse: List[str] = None) -> argparse.Namespace:
     try:
         parser = argparse.ArgumentParser(prog='pypefitter',
                                          description='Run pypefitter to create a concrete pipeline.')
+        parser.add_argument('-v', '--verbose', dest='verbosity', action='count', default=0,
+                            help='The verbosity level of the logging.')
         parser.add_argument('-f', '--file', dest='file', action='store',
                             default=f"{pf_default_file}",
                             help='The file containing the pypefitter definition.')
-        parser.add_argument('-p', '--provider', dest='provider', action='store',
-                            default='jenkins', choices=['jenkins', 'aws'],
-                            help='The provider to be used to create the pipeline.')
-        parser.add_argument('-c', '--config', dest='config', action='store',
-                            help='The provider-specific configuration file.')
-        parser.add_argument('-v', '--verbose', dest='verbosity', action='count', default=0,
-                            help='The verbosity level of the logging.')
-        # parser.add_argument(dest='command', choices=['validate', 'generate'], action='store',
-        #                     default='generate',
-        #                     help='The action to take with the pypefitter file.')
+        command_parsers = parser.add_subparsers()
+        command_parsers.add_parser('validate')
+        command_parsers.add_parser('generate')
+
         parsed_args = parser.parse_args(args_to_parse) \
             if args_to_parse is not None else parser.parse_args()
     except SystemExit:
@@ -54,13 +50,19 @@ def parse_cli_arguments(args_to_parse: List[str] = None) -> argparse.Namespace:
 def parse_pypefitter_definition(args: argparse.Namespace, pf_content: str):
     """
     Parses a Pypefitter definition in the pf_content argument.
+    :param args: The arguments provided to the Pypefitter CLI.
     :param pf_content: A Pypefitter definition that we want to parse.
     """
     logger.info(f"Parse of Pypefitter file [{args.file}] started")
+    logger.debug(f"Attaching lexer to input stream")
     lexer = PypefitterLexer(InputStream(pf_content))
+    logger.debug(f"Attaching token stream to lexer")
     stream = CommonTokenStream(lexer)
+    logger.debug(f"Attaching parser to token stream")
     parser = PypefitterParser(stream)
+    logger.debug(f"Attaching visitor to parser")
     visitor = PypefitterVisitor()
+    logger.debug(f"Starting parse")
     visitor.visitPypefitter(parser.pypefitter())
     logger.info(f"Parse of Pypefitter file [{args.file}] complete")
 
@@ -68,6 +70,7 @@ def parse_pypefitter_definition(args: argparse.Namespace, pf_content: str):
 def read_pypefitter_file(args: argparse.Namespace, pf_file_path: Path) -> str:
     """
     Reads the content of a Pypefitter file.
+    :param args: The arguments provided to the Pypefitter CLI.
     :param pf_file_path: The path to the file containing a Pypefitter
     definition.
     :return: The content of 'pf_file_path'.

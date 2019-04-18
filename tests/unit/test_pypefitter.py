@@ -18,20 +18,10 @@ def pf_file():
     'cli_params, expected', [
         ([],                        True),
         (['-v'],                    True),
-        (['-c'],                    False),
-        (['-c', 'test'],            True),
-        (['--config'],              False),
-        (['--config', 'test'],      True),
         (['-f'],                    False),
         (['--file'],                False),
         (['-f', 'test'],            True),
         (['--file', 'test'],        True),
-        (['-p'],                    False),
-        (['--provider'],            False),
-        (['-p', 'jenkins'],         True),
-        (['--provider', 'jenkins'], True),
-        (['-p', 'aws'],             True),
-        (['--provider', 'aws'],     True),
     ]
 )
 def test_parse_cli_arguments(cli_params: List[str], expected: bool):
@@ -46,20 +36,10 @@ def test_parse_cli_arguments(cli_params: List[str], expected: bool):
     'cli_params, expected', [
         ([],                        0),
         (['-v'],                    0),
-        (['-c'],                    1),
-        (['-c', 'test'],            0),
-        (['--config'],              1),
-        (['--config', 'test'],      0),
         (['-f'],                    1),
         (['--file'],                1),
         (['-f', 'test'],            2),
         (['--file', 'test'],        2),
-        (['-p'],                    1),
-        (['--provider'],            1),
-        (['-p', 'jenkins'],         0),
-        (['--provider', 'jenkins'], 0),
-        (['-p', 'aws'],             0),
-        (['--provider', 'aws'],     0),
     ]
 )
 def test_main(cli_params: List[str], expected: bool, pf_file):

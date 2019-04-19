@@ -36,6 +36,8 @@ def parse_cli_arguments(args_to_parse: List[str] = None) -> argparse.Namespace:
         parser.add_argument('-f', '--file', dest='file', action='store',
                             default=f"{pf_default_file}",
                             help='The file containing the pypefitter definition.')
+        parser.add_argument('-p', '--provider', dest='provider', action='store',
+                            help='The name of the provider to be used to perform the pypefitter command.')
         command_parsers = parser.add_subparsers()
         command_parsers.add_parser('validate')
         command_parsers.add_parser('generate')

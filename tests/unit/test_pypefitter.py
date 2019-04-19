@@ -22,6 +22,10 @@ def pf_file():
         (['--file'],                False),
         (['-f', 'test'],            True),
         (['--file', 'test'],        True),
+        (['-p'],                    False),
+        (['--provider'],            False),
+        (['-p', 'jenkins'],         True),
+        (['--provider', 'jenkins'], True),
     ]
 )
 def test_parse_cli_arguments(cli_params: List[str], expected: bool):
@@ -40,6 +44,10 @@ def test_parse_cli_arguments(cli_params: List[str], expected: bool):
         (['--file'],                1),
         (['-f', 'test'],            2),
         (['--file', 'test'],        2),
+        (['-p'],                    1),
+        (['--provider'],            1),
+        (['-p', 'jenkins'],         0),
+        (['--provider', 'jenkins'], 0),
     ]
 )
 def test_main(cli_params: List[str], expected: bool, pf_file):

@@ -13,5 +13,3 @@ class TerraformEmitter(AwsEmitter):
     @classmethod
     def get_emitter_id(cls) -> str:
         return 'terraform'
-
-

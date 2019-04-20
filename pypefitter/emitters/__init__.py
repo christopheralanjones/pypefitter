@@ -28,5 +28,3 @@ class AwsEmitter(Emitter):
         :return: The ID of the Provider that this Emitter supports.
         """
         return 'aws'
-
-

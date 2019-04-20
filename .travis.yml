@@ -9,12 +9,13 @@ install:
   - pip install pipenv
   - pipenv install --ignore-pipfile --dev
 before_script:
-  - pytest --cov=pypefitter --cov-report=xml
   - flake8 pypefitter
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
   - chmod +x ./cc-test-reporter
   - ./cc-test-reporter before-build
 script:
   - python setup.py sdist bdist_wheel
+  - pip install dist/pypefitter-0.0.1.tar.gz
+  - pytest --cov=pypefitter --cov-report=xml
 after_script:
   - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT

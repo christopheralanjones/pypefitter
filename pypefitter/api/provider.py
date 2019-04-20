@@ -175,7 +175,7 @@ class ProviderManager(object):
         cls.providers = {}
         for entry_point in pkg_resources.iter_entry_points(provider_entry_point):
             cls.providers[entry_point.name] = (entry_point.load())()
-            pypefitter.logger.info(f"Provider [{entry_point.name}] resolves to [{cls.providers[entry_point.name].__class__.__qualname__}]")
+            pypefitter.logger.info(f"Provider [{entry_point.name}] is [{cls.providers[entry_point.name].__class__.__name__}]")
         pypefitter.logger.info(f"Providers from [{provider_entry_point}] entry point loaded")
 
         # find all of the emitters installed as plugins and force them to load as well
@@ -260,7 +260,7 @@ class EmitterManager(object):
         cls.emitters = {}
         for entry_point in pkg_resources.iter_entry_points(emitter_entry_point):
             cls.emitters[entry_point.name] = (entry_point.load())()
-            pypefitter.logger.info(f"Emitter [{entry_point.name}] resolves to [{cls.emitters[entry_point.name].__class__.__qualname__}]")
+            pypefitter.logger.info(f"Emitter [{entry_point.name}] is [{cls.emitters[entry_point.name].__class__.__name__}]")
         pypefitter.logger.info(f"Emitters from [{emitter_entry_point}] entry point loaded")
 
     @classmethod

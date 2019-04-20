@@ -5,7 +5,7 @@ the 'providers' directory.
 import argparse
 import logging
 from pypefitter.api import PypefitterError
-from pypefitter.api.provider import EmitterManager, Provider, ProviderManager
+from pypefitter.api.provider import Provider, ProviderManager
 from typing import List
 
 # do the basic logging configuration

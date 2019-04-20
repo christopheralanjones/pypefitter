@@ -7,7 +7,7 @@ import pytest
 
 @pytest.fixture
 def pf_definition():
-    return 'pypefitter {}'
+    return 'pypefitter pipeline {}'
 
 
 @pytest.fixture

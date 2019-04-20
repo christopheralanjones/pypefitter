@@ -11,6 +11,7 @@ from pathlib import Path
 import pkg_resources
 import pypefitter
 from pypefitter.api import PypefitterError
+from pypefitter.api.model import Pypeline
 from pypefitter.dsl.parser.PypefitterLexer import PypefitterLexer
 from pypefitter.dsl.parser.PypefitterParser import PypefitterParser
 from pypefitter.dsl.visitor import PypefitterErrorListener, PypefitterVisitor
@@ -57,7 +58,7 @@ class ProviderHelper:
     classes comparatively clean.
     """
     @classmethod
-    def parse_pypefitter_definition(cls, pf_content: str) -> None:
+    def parse_pypefitter_definition(cls, pf_content: str) -> Pypeline:
         """
         Parses a Pypefitter definition in the pf_content argument.
 
@@ -171,7 +172,11 @@ class Provider(ABC):
         args : argparse.Namespace
             The set of parameters that was provied to Pypefitter
         """
-        pass
+        pypefitter.logger.info(f"Writing default pypefitter declaration")
+        with open(f"{args.file}", 'w') as pf_file:
+            pf_file.write('pypefitter pypeline { }')
+            pf_file.close()
+        pypefitter.logger.info(f"Default pypefitter declaration written")
 
     def validate(self, args: argparse.Namespace) -> None:
         """

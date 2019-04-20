@@ -14,5 +14,15 @@ class PypefitterVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by PypefitterParser#stage.
+    def visitStage(self, ctx:PypefitterParser.StageContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by PypefitterParser#stage_body.
+    def visitStage_body(self, ctx:PypefitterParser.Stage_bodyContext):
+        return self.visitChildren(ctx)
+
+
 
 del PypefitterParser

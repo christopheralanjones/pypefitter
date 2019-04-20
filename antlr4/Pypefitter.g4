@@ -4,13 +4,24 @@ grammar Pypefitter;
 ** PIPELINE
 */
 pypefitter
-    : PYPEFITTER LBRACE RBRACE
+    : PYPEFITTER stage_body
     ;
+
+stage
+    : STAGE stage_body
+    ;
+
+stage_body
+    : name=Identifier LBRACE stage* RBRACE
+    ;
+
+
 
 /*
 ** KEYWORDS
 */
 PYPEFITTER : 'pypefitter';
+STAGE : 'stage';
 
 
 /*

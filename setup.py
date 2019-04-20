@@ -97,10 +97,18 @@ setup(
     # For example, the following would provide a command called `sample` which
     # executes the function `main` from this package when invoked:
     entry_points={  # Optional
-        # 'console_scripts': [
-        #     'sample=sample:main',
-        # ],
-        'pypefitter_providers': []
+        'console_scripts': [
+            'pypefitter=pypefitter:main',
+        ],
+        'pypefitter_providers': [
+            'jenkins=pypefitter.providers.jenkins:JenkinsProvider',
+            'aws=pypefitter.providers.aws:AwsProvider'
+        ],
+        'pypefitter_emitters': [
+            'jenkinsfile=pypefitter.emitters.jenkinsfile:JenkinsfileEmitter',
+            'terraform=pypefitter.emitters.terraform:TerraformEmitter',
+            'cloudformation=pypefitter.emitters.cloudformation:CloudFormationEmitter',
+        ]
     },
 
     # List additional URLs that are relevant to your project as a dict.

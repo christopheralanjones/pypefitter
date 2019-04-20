@@ -44,9 +44,7 @@ def parse_cli_arguments(args_to_parse: List[str] = None) -> argparse.Namespace:
             ProviderManager.get_provider(provider_name).decorate_cli(provider_parser)
 
         # set some defaults
-        default_provider_name = ProviderManager.get_loaded_provider_names()[0]
-        default_emitter_name = EmitterManager.get_loaded_emitters_names_for_provider(default_provider_name)[0]
-        parser.set_defaults(provider=default_provider_name, command='generate', emitter=default_emitter_name)
+        parser.set_defaults(provider='jenkins', command='generate', emitter='jenkinsfile')
 
         # now try to parse the arguments
         parsed_args = parser.parse_args(args_to_parse) \

@@ -3,6 +3,9 @@
 .xml
 build
 dist
+docs/_build
+docs/_static
+docs/_templates
 pypefitter.egg-info
 venv
 __pycache__

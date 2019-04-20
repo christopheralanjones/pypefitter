@@ -2,6 +2,7 @@
 Defines the classes that are used to implement providers for the various
 platforms.
 """
+from abc import ABC, abstractmethod
 from antlr4 import CommonTokenStream, InputStream
 import argparse
 import errno
@@ -56,11 +57,14 @@ class ProviderHelper:
     classes comparatively clean.
     """
     @classmethod
-    def parse_pypefitter_definition(cls, pf_content: str):
+    def parse_pypefitter_definition(cls, pf_content: str) -> None:
         """
         Parses a Pypefitter definition in the pf_content argument.
-        :param args: The arguments provided to the Pypefitter CLI.
-        :param pf_content: A Pypefitter definition that we want to parse.
+
+        Parameters
+        ----------
+        pf_content : str
+            A Pypefitter definition that we want to parse.
         """
         pypefitter.logger.debug(f"Attaching lexer to input stream")
         lexer = PypefitterLexer(InputStream(pf_content))
@@ -78,10 +82,16 @@ class ProviderHelper:
     def read_pypefitter_file(cls, pf_file_path: Path) -> str:
         """
         Reads the content of a Pypefitter file.
-        :param args: The arguments provided to the Pypefitter CLI.
-        :param pf_file_path: The path to the file containing a Pypefitter
-        definition.
-        :return: The content of 'pf_file_path'.
+
+        Parameters
+        ----------
+        pf_file_path : Path
+            The path to the file containing a Pypefitter definition.
+
+        Returns
+        -------
+        str
+            The content of 'pf_file_path'.
         """
         pypefitter.logger.info(f"Using Pypefitter file [{pf_file_path}]")
         if not pf_file_path.is_file():
@@ -94,16 +104,21 @@ class ProviderHelper:
         return pf_content
 
 
-class Provider(object):
+class Provider(ABC):
     """
     Defines the Provider API, which is used to declare concrete Provider
     implementations for platforms like Jenkins or AWS.
     """
     @classmethod
+    @abstractmethod
     def get_provider_id(cls) -> str:
         """
         Returns the unique id of the provider.
-        :return: The unique id of the provider.
+
+        Returns
+        -------
+        str
+            The unique id of the provider.
         """
         pass
 
@@ -111,7 +126,12 @@ class Provider(object):
     def decorate_cli(cls, provider_parser) -> None:
         """
         Adds provider-specific options to the CLI.
-        :return:
+
+        Parameters
+        ----------
+        provider_parser
+            An argsparse parser that the `Provider`_ can decorate with its
+            own options.
         """
         # get the list of emitters for the provider
         emitters: List[str] = \
@@ -210,7 +230,7 @@ class ProviderManager(object):
         return list(cls.providers.keys())
 
 
-class Emitter(object):
+class Emitter(ABC):
     """
     Each emitter understands how to emit code. Each emitter works on behalf of
     a single Provider, which means that each provider can support more than one
@@ -224,10 +244,12 @@ class Emitter(object):
         self.provider = ProviderManager.get_provider(self.get_provider_id())
 
     @classmethod
+    @abstractmethod
     def get_emitter_id(cls) -> str:
         pass
 
     @classmethod
+    @abstractmethod
     def get_provider_id(cls) -> str:
         pass
 

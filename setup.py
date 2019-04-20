@@ -69,7 +69,7 @@ setup(
     # Similar to `install_requires` above, these must be valid existing
     # projects.
     extras_require={  # Optional
-        # 'dev': ['check-manifest'],
+        'dev': ['sphinx', 'blurb', 'python-docs-theme'],
         'test': ['pytest', 'coverage', 'pytest-cov', 'flake8'],
     },
 

@@ -152,7 +152,11 @@ class Provider(ABC):
     def generate(self, args: argparse.Namespace) -> None:
         """
         Performs the actual code generation process.
-        :return:
+
+        Parameters
+        ----------
+        args : argparse.Namespace
+            The set of parameters that was provied to Pypefitter
         """
         self.validate(args)
 
@@ -161,7 +165,11 @@ class Provider(ABC):
         Used to produce a default pypefitter file to help teams bootstrap
         the process. This might be affected by the type of the Provider
         so we allow them the ability to override.
-        :return:
+
+        Parameters
+        ----------
+        args : argparse.Namespace
+            The set of parameters that was provied to Pypefitter
         """
         pass
 
@@ -169,7 +177,11 @@ class Provider(ABC):
         """
         Performs a validation step to ensure that there is enough information
         provided that a subsequent code generation request will succeed.
-        :return:
+
+        Parameters
+        ----------
+        args : argparse.Namespace
+            The set of parameters that was provied to Pypefitter
         """
         pf_file_path = Path(args.file)
         pf_content = ProviderHelper.read_pypefitter_file(pf_file_path)
@@ -207,11 +219,19 @@ class ProviderManager(object):
         Returns the Provider associated with the specified name. If multiple
         Providers have been loaded for the same name, then the first one loaded
         will be returned.
-        :param provider_name: The name of the provider that we wish to return.
-        The value of this parameter must match to the key used in the entry
-        point used to define pypefitter providers.
-        :return: The Provider associated with the provider_name or None if
-        there are no Providers associated with the provider_name.
+
+        Parameters
+        ----------
+        provider_name : str
+            The name of the provider that we wish to return. The value of this
+            parameter must match to the key used in the entry point used to
+            define pypefitter providers.
+
+        Returns
+        -------
+        Provider
+            The Provider associated with the provider_name or None if there
+            are no Providers associated with the provider_name.
         """
         # if we don't know what the provider is, that's a problem. if we do,
         # and if this is the first time we've been asked for it, then
@@ -224,8 +244,12 @@ class ProviderManager(object):
         """
         Returns a list of the names of the providers that have been loaded
         by Pypefitter.
-        :return: The list of the names of the providers that have been loaded
-        by Pypefitter.
+
+        Returns
+        -------
+        List[str]
+            The list of the names of the providers that have been loaded by
+            Pypefitter.
         """
         return list(cls.providers.keys())
 
@@ -246,11 +270,28 @@ class Emitter(ABC):
     @classmethod
     @abstractmethod
     def get_emitter_id(cls) -> str:
+        """
+        Returns the ID of the Emitter.
+
+        Returns
+        -------
+        str
+            The ID of the Emitter. This value will be unique across all
+            emitters loaded by the emitter entry point.
+        """
         pass
 
     @classmethod
     @abstractmethod
     def get_provider_id(cls) -> str:
+        """
+        Returns the ID of the Provider to which this Emitter is associated.
+
+        Returns
+        -------
+        str
+            The unique ID of the Provider for which this Emitter will emit.
+        """
         pass
 
     @classmethod
@@ -258,9 +299,18 @@ class Emitter(ABC):
         """
         Indicates whether or not this Emitter can emit on behalf of the
         specified Provider.
-        :param provider_name: The name of the provider as defined in the
-        pypefitter_providers entry point.
-        :return: True if the provider is for 'jenkins' and false otherwise.
+
+        Parameters
+        ----------
+        provider_name : str
+            The name of the provider as defined in the pypefitter_providers
+            entry point.
+
+        Returns
+        -------
+        bool
+            True if the Emitter will emit for the Provider with `provider_name`
+            and False otherwise.
         """
         return provider_name.lower() == cls.get_provider_id()
 
@@ -291,11 +341,19 @@ class EmitterManager(object):
         Returns the Emitter associated with the specified name. If multiple
         Emitters have been loaded for the same name, then the first one loaded
         will be returned.
-        :param emitter_name: The name of the Emitter that we wish to return.
-        The value of this parameter must match to the key used in the entry
-        point used to define pypefitter emitters.
-        :return: The Emitter associated with the emitter_name or None if
-        there are no Emitters associated with the emitter_name.
+
+        Parameters
+        ----------
+        emitter_name : str
+            The name of the Emitter that we wish to return. The value of this
+            parameter must match to the key used in the entry point used to
+            define pypefitter emitters.
+
+        Returns
+        -------
+        Emitter
+            The Emitter associated with the `emitter_name` or None if there
+            are no Emitters associated with `emitter_name`.
         """
         if emitter_name not in cls.emitters.keys():
             raise PypefitterEmitterNotFoundError(emitter_name)
@@ -306,8 +364,12 @@ class EmitterManager(object):
         """
         Returns a list of the names of the emitters that have been loaded
         by Pypefitter.
-        :return: The list of the names of the providers that have been loaded
-        by Pypefitter.
+
+        Returns
+        -------
+        List[str]
+            The list of the names of the providers that have been loaded by
+            Pypefitter.
         """
         return list(cls.emitters.keys())
 
@@ -316,10 +378,18 @@ class EmitterManager(object):
         """
         Returns a list of the names of the emitters that have been loaded
         by Pypefitter.
-        :param provider_name: The name of the Provider for which we want the
-        list of supported Emitter names.
-        :return: The list of the names of the emitters that have been loaded
-        by Pypefitter that can support the specified provider.
+
+        Parameters
+        ----------
+        provider_name : str
+            The name of the Provider for which we want the list of supported
+            Emitter names.
+
+        Returns
+        -------
+        List[str]
+            The list of the names of the emitters that have been loaded by
+            Pypefitter that can support the specified provider.
         """
         provider_emitters: List[str] = []
         for emitter_name, emitter_class in cls.emitters.items():

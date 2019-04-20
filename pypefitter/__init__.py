@@ -21,9 +21,18 @@ pf_default_file = 'pypefitter.pf'
 def parse_cli_arguments(args_to_parse: List[str] = None) -> argparse.Namespace:
     """
     Define and parse all of the command-line arguments provided.
-    :return: An argparser.Namespace that contains all of the parsed arguments.
-    """
 
+    Parameters
+    ----------
+    args_to_parse : List[str]
+        The list of arguments to be parsed against the various argument
+        parsing rules.
+
+    Returns
+    -------
+    argparse.Namespace
+        An `argparser.Namespace`_ that contains all of the parsed arguments.
+    """
     parsed_args = None
 
     try:
@@ -57,7 +66,11 @@ def parse_cli_arguments(args_to_parse: List[str] = None) -> argparse.Namespace:
 def set_logging_level(args: argparse.Namespace) -> None:
     """
     Sets the logging level based on the arguments provided.
-    :param args: The arguments provided to the Pypefitter CLI.
+
+    Parameters
+    ----------
+    args : argsparse.Namespace
+        The arguments provided to the Pypefitter CLI.
     """
     # first things first -- set the logging level. we do this by
     # starting at 'error' and working down. we never allow it go
@@ -69,8 +82,13 @@ def set_logging_level(args: argparse.Namespace) -> None:
 
 def main(argv: List[str] = None) -> int:
     """
-    The Pypefitter driver.
-    :param argv: Any command-line arguments to be provided.
+    The Pypefitter driver. This method will parse the arguments provided
+    and then perform the specified command.
+
+    Parameters
+    ----------
+    argv : List[str]
+        Any command-line arguments to be provided.
     """
     # find all of the providers installed as plugins
     ProviderManager.load_providers()

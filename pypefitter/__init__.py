@@ -5,7 +5,7 @@ the 'providers' directory.
 import argparse
 import logging
 from pypefitter.api import PypefitterError
-from pypefitter.api.provider import Provider, ProviderManager
+from pypefitter.api.provider import EmitterManager, Provider, ProviderManager
 from typing import List
 
 # do the basic logging configuration
@@ -43,6 +43,11 @@ def parse_cli_arguments(args_to_parse: List[str] = None) -> argparse.Namespace:
             provider_parser.set_defaults(provider=provider_name)
             ProviderManager.get_provider(provider_name).decorate_cli(provider_parser)
 
+        # set some defaults
+        default_provider_name = ProviderManager.get_loaded_provider_names()[0]
+        default_emitter_name = EmitterManager.get_loaded_emitters_names_for_provider(default_provider_name)[0]
+        parser.set_defaults(provider=default_provider_name, command='generate', emitter=default_emitter_name)
+
         # now try to parse the arguments
         parsed_args = parser.parse_args(args_to_parse) \
             if args_to_parse is not None else parser.parse_args()
@@ -74,9 +79,14 @@ def main(argv: List[str] = None) -> int:
 
     # parse the command-line arguments
     args = parse_cli_arguments(argv)
-    print(args)
     if not args:
         return 1
+    logger.info('--------------------------------------------')
+    logger.info(f"Provider.......{args.provider}")
+    logger.info(f"Emitter........{args.emitter}")
+    logger.info(f"Command........{args.command}")
+    logger.info(f"Definition.....{args.file}")
+    logger.info('--------------------------------------------')
     set_logging_level(args)
 
     # invoke the specific provider method

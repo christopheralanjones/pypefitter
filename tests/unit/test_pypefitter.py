@@ -1,27 +1,6 @@
-import os
 import pypefitter
-from pypefitter.api.provider import ProviderManager
 import pytest
 from typing import List
-
-
-@pytest.fixture(scope="module", autouse=True)
-def providers_fixture():
-    ProviderManager.load_providers()
-
-
-@pytest.fixture(
-    params=['jenkins', 'aws']
-)
-def pf_provider(request) -> str:
-    return request.param
-
-
-@pytest.fixture(
-    params=['init', 'validate', 'generate']
-)
-def pf_command(request) -> str:
-    return request.param
 
 
 @pytest.mark.parametrize(

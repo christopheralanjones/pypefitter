@@ -1,56 +1,45 @@
 import os
 from pathlib import Path
 import pypefitter
+import conftest
 from pypefitter.api.provider import Emitter, EmitterManager, ProviderHelper, ProviderManager, \
-    PypefitterProviderNotFoundError, PypefitterEmitterNotFoundError
+    PypefitterProviderNotFoundError, PypefitterEmitterNotFoundError, PypefitterError
 import pytest
 
 
-default_pf_text = 'pypefitter { }'
+# default_pf_text = 'pypefitter { }'
 
 
-@pytest.fixture
-def pf_real_file():
-    with open(f"{pypefitter.pf_default_file}", 'w') as pf_file:
-        pf_file.write(default_pf_text)
-        pf_file.close()
-    yield Path(pf_file.name)
-    os.remove(f"{pypefitter.pf_default_file}")
+# @pytest.fixture
+# def pf_real_file():
+#     with open(f"{pypefitter.pf_default_file}", 'w') as pf_file:
+#         pf_file.write(default_pf_text)
+#         pf_file.close()
+#     yield Path(pf_file.name)
+#     os.remove(f"{pypefitter.pf_default_file}")
 
 
-@pytest.fixture
-def pf_fake_file():
-    return Path(pypefitter.pf_default_file)
+# @pytest.fixture
+# def pf_fake_file():
+#     return Path(pypefitter.pf_default_file)
 
 
 #
 # PROVIDER HELPER
 #
 
-def test_provider_helper_reads_real_file(pf_real_file):
-    assert ProviderHelper.read_pypefitter_file(pf_real_file) == default_pf_text
+def test_provider_helper_reads_real_file(pf_real_file: Path, pf_definition: str):
+    assert ProviderHelper.read_pypefitter_file(pf_real_file) == pf_definition
 
 
 def test_provider_helper_does_not_read_missing_file(pf_fake_file):
-    with pytest.raises(FileNotFoundError):
+    with pytest.raises(PypefitterError):
         ProviderHelper.read_pypefitter_file(pf_fake_file)
 
 
 #
 # PROVIDER MANAGER
 #
-
-# This isn't really right, but we need to force a load of a bunch of
-# providers. This should really be mocked -- in more ways than one.
-ProviderManager.load_providers()
-
-
-@pytest.fixture(
-    params=ProviderManager.get_loaded_provider_names()
-)
-def pf_provider(request):
-    return request.param
-
 
 def test_manager_knows_discovered_providers(pf_provider: str):
     assert ProviderManager.get_provider(pf_provider) is not None
@@ -64,17 +53,6 @@ def test_manager_fails_on_unknown_provider():
 #
 # EMITTER MANAGER
 #
-
-# The emitters were loaded as part of the provider load.
-
-
-@pytest.fixture(
-    params=EmitterManager.get_loaded_emitter_names()
-)
-def pf_emitter(request):
-    return request.param
-
-
 def test_manager_knows_discovered_emitters(pf_emitter: str):
     emitter: Emitter = EmitterManager.get_emitter(pf_emitter)
     assert emitter is not None

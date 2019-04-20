@@ -86,7 +86,7 @@ class ProviderHelper:
         pypefitter.logger.info(f"Using Pypefitter file [{pf_file_path}]")
         if not pf_file_path.is_file():
             pypefitter.logger.error(f"Pypefitter file [{pf_file_path}] does not exist")
-            raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), pf_file_path)
+            raise PypefitterError from FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), pf_file_path)
 
         pypefitter.logger.info(f"Reading Pypefitter file")
         with pf_file_path.open('r') as pf_file:
@@ -127,7 +127,7 @@ class Provider(object):
                                      help='The style of output to be produced')
 
         # assign some global defaults to make it easier to have a fast cli
-        provider_parser.set_defaults(command='generate', emitter=emitters[0])
+        provider_parser.set_defaults(provider=cls.get_provider_id(), command='generate', emitter=emitters[0])
 
     def generate(self, args: argparse.Namespace) -> None:
         """
@@ -175,7 +175,7 @@ class ProviderManager(object):
         cls.providers = {}
         for entry_point in pkg_resources.iter_entry_points(provider_entry_point):
             cls.providers[entry_point.name] = (entry_point.load())()
-            pypefitter.logger.info(f"Provider [{entry_point.name}] is [{cls.providers[entry_point.name].__class__.__name__}]")
+            pypefitter.logger.info(f"Loaded [{entry_point.name}] as [{cls.providers[entry_point.name].__class__.__name__}]")
         pypefitter.logger.info(f"Providers from [{provider_entry_point}] entry point loaded")
 
         # find all of the emitters installed as plugins and force them to load as well
@@ -260,7 +260,7 @@ class EmitterManager(object):
         cls.emitters = {}
         for entry_point in pkg_resources.iter_entry_points(emitter_entry_point):
             cls.emitters[entry_point.name] = (entry_point.load())()
-            pypefitter.logger.info(f"Emitter [{entry_point.name}] is [{cls.emitters[entry_point.name].__class__.__name__}]")
+            pypefitter.logger.info(f"Loaded [{entry_point.name}] as [{cls.emitters[entry_point.name].__class__.__name__}]")
         pypefitter.logger.info(f"Emitters from [{emitter_entry_point}] entry point loaded")
 
     @classmethod

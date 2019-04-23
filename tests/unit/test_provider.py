@@ -53,6 +53,10 @@ def test_manager_fails_on_unknown_provider():
 #
 # EMITTER MANAGER
 #
+def test_default_emitters_are_loaded(pf_emitter: str):
+    assert EmitterManager.get_loaded_emitter_names() == ['cloudformation', 'jenkinsfile', 'terraform']
+
+
 def test_manager_knows_discovered_emitters(pf_emitter: str):
     emitter: Emitter = EmitterManager.get_emitter(pf_emitter)
     assert emitter is not None

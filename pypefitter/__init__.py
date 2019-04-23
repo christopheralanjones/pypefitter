@@ -109,6 +109,6 @@ def main(argv: List[str] = None) -> int:
     try:
         provider: Provider = ProviderManager.get_provider(args.provider)
         getattr(provider, args.command)(args)
-    except PypefitterError:
+    except PypefitterError as e:
         return 1
     return 0

@@ -11,7 +11,6 @@ from pathlib import Path
 import pkg_resources
 import pypefitter
 from pypefitter.api import PypefitterError
-from pypefitter.api.model import Pypeline
 from pypefitter.dsl.parser.PypefitterLexer import PypefitterLexer
 from pypefitter.dsl.parser.PypefitterParser import PypefitterParser
 from pypefitter.dsl.visitor import PypefitterErrorListener, PypefitterVisitor
@@ -58,7 +57,7 @@ class ProviderHelper:
     classes comparatively clean.
     """
     @classmethod
-    def parse_pypefitter_definition(cls, pf_content: str) -> Pypeline:
+    def parse_pypefitter_definition(cls, pf_content: str):
         """
         Parses a Pypefitter definition in the pf_content argument.
 
@@ -76,7 +75,6 @@ class ProviderHelper:
         parser._listeners = [PypefitterErrorListener()]
         pypefitter.logger.debug(f"Attaching visitor to parser")
         visitor = PypefitterVisitor()
-        pypefitter.logger.debug(f"Starting parse")
         visitor.visitPypefitter(parser.pypefitter())
 
     @classmethod
@@ -333,7 +331,7 @@ class EmitterManager(object):
         """
         emitter_entry_point: str = 'pypefitter_emitters'
 
-        pypefitter.logger.error(f"Loading emitters from [{emitter_entry_point}] entry point")
+        pypefitter.logger.info(f"Loading emitters from [{emitter_entry_point}] entry point")
         cls.emitters = {}
         for entry_point in pkg_resources.iter_entry_points(emitter_entry_point):
             cls.emitters[entry_point.name] = (entry_point.load())()

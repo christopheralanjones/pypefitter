@@ -12,6 +12,7 @@ wheel = "*"
 
 [packages]
 antlr4-python3-runtime = "==4.7.2"
+jinja2 = "*"
 
 [requires]
 python_version = "3.7"

@@ -3,8 +3,9 @@ Contains the visitor classes for the pypefitter language recognizer.
 """
 from antlr4.error.ErrorListener import ErrorListener
 from antlr4.error.Errors import ParseCancellationException
+import pypefitter
 from pypefitter.api import PypefitterError
-from pypefitter.api.model import Pypeline
+from pypefitter.dsl.symbols import SymbolType, SymbolTable
 from pypefitter.dsl.parser.PypefitterParser import PypefitterParser
 from pypefitter.dsl.parser.PypefitterVisitor import PypefitterVisitor
 
@@ -34,11 +35,26 @@ class PypefitterErrorListener(ErrorListener):
         raise PypefitterError() from ParseCancellationException(message)
 
 
-class PypefitterVisitor(PypefitterVisitor):
+class AbstractPypefitterVisitor(PypefitterVisitor):
+    """
+    This is a base class for all PypefitterVisitors so that we can incorporate
+    some standard extensions like a symbol table. These really don't belong in
+    the visitor per se, but since these are extensions to the parser it will do
+    for now.
+    """
+    symbol_table: SymbolTable = SymbolTable()
+
+
+class PypefitterVisitor(AbstractPypefitterVisitor):
     """
     Controls the visit on the root-level pypefitter grammar.
     """
-    def visitPypefitter(self, ctx: PypefitterParser.PypefitterContext) -> Pypeline:
+    def visitPypefitter(self, ctx: PypefitterParser.PypefitterContext) -> None:
+        pypefitter.logger.debug(f"Initializing symbol table")
+        AbstractPypefitterVisitor.symbol_table = SymbolTable()
+        pypefitter.logger.debug(f"Pypefitter visitor started")
         pypeline_name = ctx.stage_body().name.text
-        return Pypeline(pypeline_name)
+        AbstractPypefitterVisitor.symbol_table.add_symbol(pypeline_name, SymbolType.PYPELINE)
+        pypefitter.logger.debug(f"Pypefitter visitor ended")
+
 

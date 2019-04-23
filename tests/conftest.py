@@ -2,6 +2,7 @@ import os
 from pathlib import Path
 import pypefitter
 from pypefitter.api.provider import ProviderManager
+from pypefitter.dsl.symbols import SymbolTable
 import pytest
 
 

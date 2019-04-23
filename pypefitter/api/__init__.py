@@ -8,4 +8,5 @@ class PypefitterError(Exception):
     """
     A custom base exception for all Pypefitter-related problems.
     """
-    pass
+    def __init__(self, message):
+        self.message = message

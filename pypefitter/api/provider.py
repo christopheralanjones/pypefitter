@@ -21,7 +21,8 @@ class PypefitterProviderError(PypefitterError):
     """
     A custom base exception for all Provider-related problems.
     """
-    pass
+    def __init__(self, message):
+        super().__init__(message)
 
 
 class PypefitterProviderNotFoundError(PypefitterProviderError):
@@ -31,14 +32,17 @@ class PypefitterProviderNotFoundError(PypefitterProviderError):
     """
     def __init__(self, provider_name: str):
         self.provider_name = provider_name
-        self.message = f"Provider [{provider_name}] is not in the list of discovered providers"
+        super().__init__(
+            f"Provider [{provider_name}] is not in the list of discovered providers"
+        )
 
 
 class PypefitterEmitterError(PypefitterError):
     """
     A custom base exception for all Emitter-related problems.
     """
-    pass
+    def __init__(self, message):
+        super().__init__(message)
 
 
 class PypefitterEmitterNotFoundError(PypefitterEmitterError):
@@ -48,7 +52,9 @@ class PypefitterEmitterNotFoundError(PypefitterEmitterError):
     """
     def __init__(self, emitter_name: str):
         self.emitter_name = emitter_name
-        self.message = f"Emitter [{emitter_name}] is not in the list of discovered emitters"
+        super().__init__(
+            f"Emitter [{emitter_name}] is not in the list of discovered emitters"
+        )
 
 
 class ProviderHelper:
@@ -95,7 +101,8 @@ class ProviderHelper:
         pypefitter.logger.info(f"Using Pypefitter file [{pf_file_path}]")
         if not pf_file_path.is_file():
             pypefitter.logger.error(f"Pypefitter file [{pf_file_path}] does not exist")
-            raise PypefitterError from FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), pf_file_path)
+            raise PypefitterError(f"Pypefitter file [{pf_file_path}] does not exist") \
+                from FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), pf_file_path)
 
         pypefitter.logger.info(f"Reading Pypefitter file")
         with pf_file_path.open('r') as pf_file:

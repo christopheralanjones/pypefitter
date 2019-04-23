@@ -91,18 +91,19 @@ def main(argv: List[str] = None) -> int:
         Any command-line arguments to be provided.
     """
     # find all of the providers installed as plugins
+    logger.info('-' * 80)
     ProviderManager.load_providers()
 
     # parse the command-line arguments
     args = parse_cli_arguments(argv)
     if not args:
         return 1
-    logger.info('--------------------------------------------')
+    logger.info('-' * 80)
     logger.info(f"Provider.......{args.provider}")
     logger.info(f"Emitter........{args.emitter}")
     logger.info(f"Command........{args.command}")
     logger.info(f"Definition.....{args.file}")
-    logger.info('--------------------------------------------')
+    logger.info('-' * 80)
     set_logging_level(args)
 
     # invoke the specific provider method
@@ -111,4 +112,6 @@ def main(argv: List[str] = None) -> int:
         getattr(provider, args.command)(args)
     except PypefitterError as e:
         return 1
+    finally:
+        logger.info('-' * 80)
     return 0

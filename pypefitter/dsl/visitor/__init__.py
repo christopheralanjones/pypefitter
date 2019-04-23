@@ -20,19 +20,19 @@ class PypefitterErrorListener(ErrorListener):
 
     def syntaxError(self, recognizer, offendingSymbol, line, column, msg, e):
         message: str = f"{str(line)}:{str(column)}: syntax ERROR, {str(msg)}"
-        raise PypefitterError() from ParseCancellationException(message)
+        raise PypefitterError(message) from ParseCancellationException(message)
 
     def reportAmbiguity(self, recognizer, dfa, startIndex, stopIndex, exact, ambigAlts, configs):
         message: str = f"Ambiguity ERROR, {str(configs)}"
-        raise PypefitterError() from ParseCancellationException(message)
+        raise PypefitterError(message) from ParseCancellationException(message)
 
     def reportAttemptingFullContext(self, recognizer, dfa, startIndex, stopIndex, conflictingAlts, configs):
         message: str = f"Attempting full context ERROR, {str(configs)}"
-        raise PypefitterError() from ParseCancellationException(message)
+        raise PypefitterError(message) from ParseCancellationException(message)
 
     def reportContextSensitivity(self, recognizer, dfa, startIndex, stopIndex, prediction, configs):
         message: str = f"Context ERROR, {str(configs)}"
-        raise PypefitterError() from ParseCancellationException(message)
+        raise PypefitterError(message) from ParseCancellationException(message)
 
 
 class AbstractPypefitterVisitor(PypefitterVisitor):

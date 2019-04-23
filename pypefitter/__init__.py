@@ -110,7 +110,7 @@ def main(argv: List[str] = None) -> int:
     try:
         provider: Provider = ProviderManager.get_provider(args.provider)
         getattr(provider, args.command)(args)
-    except PypefitterError as e:
+    except PypefitterError:
         return 1
     finally:
         logger.info('-' * 80)

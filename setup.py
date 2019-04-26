@@ -58,7 +58,7 @@ setup(
     #
     # For an analysis of "install_requires" vs pip's requirements files see:
     # https://packaging.python.org/en/latest/requirements.html
-    install_requires=['antlr4-python3-runtime', 'jinja2'],
+    install_requires=['antlr4-python3-runtime>=4.7', 'jinja2>=2.10'],
 
     # List additional groups of dependencies here (e.g. development
     # dependencies). Users will be able to install these using the "extras"
@@ -69,8 +69,8 @@ setup(
     # Similar to `install_requires` above, these must be valid existing
     # projects.
     extras_require={  # Optional
-        'dev': ['sphinx', 'blurb', 'python-docs-theme'],
-        'test': ['pytest', 'coverage', 'pytest-cov', 'flake8'],
+        'dev':  ['sphinx>=2.0', 'blurb>=1.0', 'python-docs-theme>=2018.7'],
+        'test': ['coverage>=4.5',  'flake8>=3.7', 'pytest>=4.4', 'pytest-cov>=2.6'],
     },
 
     # If there are data files included in your packages that need to be

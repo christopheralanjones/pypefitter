@@ -103,21 +103,3 @@ class PypefitterPlugin(ABC):
             point.
         """
         pass
-
-    @classmethod
-    def is_compatible_with(cls, plugin_id: str) -> bool:
-        """
-        Determines if this plugin is compatible with the specified plkugin ID.
-
-        Parameters
-        ----------
-        plugin_id : str
-            The ID of the plugin for which we're testing compatibility.
-
-        Returns
-        -------
-        bool
-            True if this plugin is compatible with the one identified by the
-            plugin_id and False otherwise. By default we assume compatibility.
-        """
-        return True

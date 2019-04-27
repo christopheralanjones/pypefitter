@@ -104,11 +104,13 @@ setup(
             'jenkins=pypefitter.providers.jenkins:JenkinsProvider',
             'aws=pypefitter.providers.aws:AwsProvider'
         ],
-        'pypefitter.emitters': [
-            'jenkinsfile=pypefitter.emitters.jenkinsfile:JenkinsfileEmitter',
+        'pypefitter.providers.jenkins.emitters': [
+            'jenkinsfile=pypefitter.emitters.jenkinsfile:JenkinsfileEmitter'
+        ],
+        'pypefitter.providers.aws.emitters': [
             'terraform=pypefitter.emitters.terraform:TerraformEmitter',
             'cloudformation=pypefitter.emitters.cloudformation:CloudFormationEmitter',
-        ]
+        ],
     },
 
     # List additional URLs that are relevant to your project as a dict.

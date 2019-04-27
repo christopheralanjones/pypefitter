@@ -47,10 +47,10 @@ def parse_cli_arguments(args_to_parse: List[str] = None) -> PypefitterResponse:
 
         # these will be delegated to the providers to construct
         provider_parsers = parser.add_subparsers()
-        for provider_name in EntryPointManager.get_plugin_names(Provider):
-            provider_parser = provider_parsers.add_parser(provider_name)
-            provider_parser.set_defaults(provider=provider_name)
-            EntryPointManager.get_plugin(Provider, provider_name).decorate_cli(provider_parser)
+        for provider in Provider.get_providers():
+            provider_parser = provider_parsers.add_parser(provider.get_plugin_id())
+            provider_parser.set_defaults(provider=provider.get_plugin_id())
+            provider.decorate_cli(provider_parser)
 
         # set some defaults
         parser.set_defaults(provider='jenkins', command='generate', emitter='jenkinsfile')
@@ -101,8 +101,6 @@ def main(argv: List[str] = None) -> int:
     """
     # find all of the providers installed as plugins
     logger.info('-' * 80)
-    EntryPointManager.load_plugins(Provider)
-    EntryPointManager.load_plugins(Emitter)
 
     # parse the command-line arguments
     response: PypefitterResponse = parse_cli_arguments(argv)
@@ -119,7 +117,7 @@ def main(argv: List[str] = None) -> int:
 
     # invoke the specific provider method
     try:
-        provider: Provider = EntryPointManager.get_plugin(Provider, request.provider)
+        provider: Provider = Provider.get_provider(request.provider)
         response: PypefitterResponse = getattr(provider, request.command)(request)
     except PypefitterError:
         return 1

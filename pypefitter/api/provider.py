@@ -99,6 +99,58 @@ class Provider(PypefitterPlugin):
         return 'pypefitter.providers'
 
     @classmethod
+    def get_emitters(cls) -> List[Emitter]:
+        """
+        Gets the Emitters that have been registered for this Provider.
+
+        Returns
+        -------
+        List[Emitter]
+            The Emitters that have been registered via the provider's emitter
+            entry point.
+        """
+        emitters: List[PypefitterPlugin] = \
+            EntryPointManager.get_plugins(f"{cls.get_entry_point()}.{cls.get_plugin_id()}.emitters")
+        return emitters
+
+    @classmethod
+    def get_providers(cls) -> List:
+        """
+        Gets the Emitters that have been registered for this Provider.
+
+        Returns
+        -------
+        List[Provider]
+            The Providers that have been registered with Pypefitter's provider
+            entry point
+        """
+        providers: List[PypefitterPlugin] = \
+            EntryPointManager.get_plugins(cls.get_entry_point())
+        return providers
+
+    @classmethod
+    def get_provider(cls, plugin_id: str):
+        """
+        Gets the Emitters that have been registered for this Provider.
+
+        Parameters
+        ----------
+        plugin_id : str
+            The ID of the provider that we want.
+
+        Returns
+        -------
+        Provider
+            The Provider with the specified plugin_id.
+
+        Raises
+        ------
+        PypefitterPluginNotFoundError
+            If no provider with the specified ID exists.
+        """
+        return EntryPointManager.get_plugin(cls.get_entry_point(), plugin_id)
+
+    @classmethod
     def decorate_cli(cls, provider_parser):
         """
         Adds provider-specific options to the CLI.
@@ -191,8 +243,7 @@ class BaseProvider(Provider):
             The argparse parser that will represent this provider
         """
         # get the list of emitters for the provider
-        emitters: List[Emitter] = \
-            list(filter(lambda emitter: emitter.is_compatible_with(cls.get_plugin_id()), EntryPointManager.get_plugins(Emitter)))
+        emitters: List[Emitter] = cls.get_emitters()
         emitter_names = list(map(lambda emitter: emitter.get_plugin_id(), emitters))
 
         # now setup some commands and whatever sub-arguments they require

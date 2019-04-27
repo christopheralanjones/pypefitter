@@ -34,24 +34,6 @@ class Emitter(PypefitterPlugin):
         """
         return 'pypefitter.emitters'
 
-    @classmethod
-    def is_compatible_with(cls, plugin_id: str) -> bool:
-        """
-        Determines if this plugin is compatible with the specified plkugin ID.
-
-        Parameters
-        ----------
-        plugin_id : str
-            The ID of the plugin for which we're testing compatibility.
-
-        Returns
-        -------
-        bool
-            True if this emitter is compatible with the ID of the provided
-            plugin and False otherwise.
-        """
-        return False
-
 
 class BaseEmitter(Emitter):
     """

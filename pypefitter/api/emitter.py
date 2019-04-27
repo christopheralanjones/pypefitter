@@ -1,7 +1,6 @@
 """
 Contains API-related elements related to emitters.
 """
-from abc import abstractmethod
 from pypefitter.api import PypefitterPlugin
 
 

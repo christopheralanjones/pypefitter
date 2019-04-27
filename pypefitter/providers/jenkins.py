@@ -1,7 +1,7 @@
 """
 Defines the JenkinsProvider provider.
 """
-from pypefitter.api.provider import Provider, BaseProvider
+from pypefitter.api.provider import BaseProvider
 
 
 class JenkinsProvider(BaseProvider):

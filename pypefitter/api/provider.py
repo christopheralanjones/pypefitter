@@ -192,7 +192,7 @@ class BaseProvider(Provider):
         """
         # get the list of emitters for the provider
         emitters: List[Emitter] = \
-           list(filter(lambda emitter: emitter.is_compatible_with(cls.get_plugin_id()), EntryPointManager.get_plugins(Emitter.get_entry_point())))
+            list(filter(lambda emitter: emitter.is_compatible_with(cls.get_plugin_id()), EntryPointManager.get_plugins(Emitter)))
         emitter_names = list(map(lambda emitter: emitter.get_plugin_id(), emitters))
 
         # now setup some commands and whatever sub-arguments they require

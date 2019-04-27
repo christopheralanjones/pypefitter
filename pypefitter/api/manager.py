@@ -91,7 +91,31 @@ class EntryPointManager(object):
     """
 
     @classmethod
-    def load_entry_point(cls, entry_point: str) -> None:
+    def __get_entry_point(cls, plugin_type: type) -> str:
+        """
+        Given a pluggable type, get the type's entry point.
+
+        Parameters
+        ----------
+        plugin_type : type
+            The type of plugin in which we're interested.
+
+        Returns
+        -------
+        str
+            The name of the entry point associated with the plugin_type.
+
+        Raises
+        ------
+        ValueError
+            If plugin_type is not subclassed from PypefitterPlugin.
+        """
+        if not issubclass(plugin_type, PypefitterPlugin):
+            raise ValueError(f"[{plugin_type.__name__} does not inherit from PypefitterPlugin]")
+        return plugin_type.get_entry_point()
+
+    @classmethod
+    def load_plugins(cls, plugin_type: type) -> None:
         """
         Finds and loads the plugins for the specified entry_point.
 
@@ -100,9 +124,15 @@ class EntryPointManager(object):
 
         Parameters
         ----------
-        entry_point : str
-            The name of the entry point to be loaded or re-loaded.
+        plugin_type : type
+            The type of plugin in which we're interested.
+
+        Raises
+        ------
+        ValueError
+            If plugin_type is not subclassed from PypefitterPlugin.
         """
+        entry_point: str = cls.__get_entry_point(plugin_type)
         pypefitter.logger.debug(f"Preparing plugin cache for entry point [{entry_point}]")
         cls.__plugin_cache[entry_point] = {}
 
@@ -113,15 +143,15 @@ class EntryPointManager(object):
         pypefitter.logger.info(f"Plugins from [{entry_point}] entry point loaded")
 
     @classmethod
-    def get_plugin(cls, entry_point: str, plugin_id: str) -> object:
+    def get_plugin(cls, plugin_type: type, plugin_id: str) -> object:
         """
         Returns the plugin from the specified entry_point with the specified
         plugin id.
 
         Parameters
         ----------
-        entry_point : str
-            The name of the entry point in which we're looking for the plugin.
+        plugin_type : type
+            The type of plugin in which we're interested.
         plugin_id : str
             The ID of the plugin that we wish to return. The value of this
             parameter must match to the key used in the entry point.
@@ -134,10 +164,13 @@ class EntryPointManager(object):
 
         Raises
         ------
+        ValueError
+            If plugin_type is not subclassed from PypefitterPlugin.
         PypefitterPluginNotFoundError
             If no plugin with the specified ID exists within the specified
             entry point.
         """
+        entry_point: str = cls.__get_entry_point(plugin_type)
         if entry_point not in cls.__plugin_cache.keys():
             return None
         if plugin_id not in cls.__plugin_cache[entry_point].keys():
@@ -145,40 +178,51 @@ class EntryPointManager(object):
         return cls.__plugin_cache[entry_point][plugin_id]
 
     @classmethod
-    def get_plugins(cls, entry_point: str) -> List[PypefitterPlugin]:
+    def get_plugins(cls, plugin_type: type) -> List[PypefitterPlugin]:
         """
         Returns a list of the names of the plugins that have been loaded
         for the specified entry point.
 
         Parameters
         ----------
-        entry_point : str
-            The name of the entry point for which we want the loaded names
+        plugin_type : type
+            The type of plugin in which we're interested.
 
         Returns
         -------
         List[PypefitterPlugin]
             The list of the plugins that have been loaded for the specified
-            entry point or None if the entry point does not exist.
+            plugin type or None if the entry point does not exist.
+
+        Raises
+        ------
+        ValueError
+            If plugin_type is not subclassed from PypefitterPlugin.
         """
+        entry_point: str = cls.__get_entry_point(plugin_type)
         return list(cls.__plugin_cache[entry_point].values()) if entry_point in cls.__plugin_cache.keys() else None
 
     @classmethod
-    def get_plugin_names(cls, entry_point: str) -> List[str]:
+    def get_plugin_names(cls, plugin_type: type) -> List[str]:
         """
         Returns a list of the names of the plugins that have been loaded
-        for the specified entry point.
+        for the specified plugin type.
 
         Parameters
         ----------
-        entry_point : str
-            The name of the entry point for which we want the loaded names
+        plugin_type : type
+            The type of plugin in which we're interested.
 
         Returns
         -------
         List[str]
             The list of the names of the plugins that have been loaded for
-            the specified entry point or None if the entry point does not
-            exist.
+            the specified plugin type or None if no such plugins exist.
+
+        Raises
+        ------
+        ValueError
+            If plugin_type is not subclassed from PypefitterPlugin.
         """
+        entry_point: str = cls.__get_entry_point(plugin_type)
         return list(cls.__plugin_cache[entry_point].keys()) if entry_point in cls.__plugin_cache.keys() else None

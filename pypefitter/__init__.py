@@ -4,8 +4,9 @@ the 'providers' directory.
 """
 import argparse
 import logging
-from pypefitter.api import PypefitterError
-from pypefitter.api.provider import Provider, ProviderManager
+from pypefitter.api import PypefitterError, PypefitterRequest, PypefitterResponse
+from pypefitter.api.manager import ProviderManager
+from pypefitter.api.provider import Provider
 from typing import List
 
 # do the basic logging configuration
@@ -18,7 +19,7 @@ logger.setLevel(logging.INFO)
 pf_default_file = 'pypefitter.pf'
 
 
-def parse_cli_arguments(args_to_parse: List[str] = None) -> argparse.Namespace:
+def parse_cli_arguments(args_to_parse: List[str] = None) -> PypefitterResponse:
     """
     Define and parse all of the command-line arguments provided.
 
@@ -33,8 +34,6 @@ def parse_cli_arguments(args_to_parse: List[str] = None) -> argparse.Namespace:
     argparse.Namespace
         An `argparser.Namespace`_ that contains all of the parsed arguments.
     """
-    parsed_args = None
-
     try:
         # these are going to apply to everything
         parser = argparse.ArgumentParser(prog='pypefitter',
@@ -58,25 +57,34 @@ def parse_cli_arguments(args_to_parse: List[str] = None) -> argparse.Namespace:
         # now try to parse the arguments
         parsed_args = parser.parse_args(args_to_parse) \
             if args_to_parse is not None else parser.parse_args()
+
+        # assuming we can, we then package everything up
+        request: PypefitterRequest = \
+            PypefitterRequest(parsed_args.command, parsed_args.provider, parsed_args.file,
+                              **{'emitter': parsed_args.emitter, 'verbosity': parsed_args.verbosity})
+        response = PypefitterResponse(200, 'OK', **{'request': request})
     except SystemExit:
-        pass
-    return parsed_args
+        response = PypefitterResponse(400, 'Bad Request')
+
+    # the payload of the response will be the request that will actually be
+    # used to perform work
+    return response
 
 
-def set_logging_level(args: argparse.Namespace) -> None:
+def set_logging_level(request: PypefitterRequest) -> None:
     """
     Sets the logging level based on the arguments provided.
 
     Parameters
     ----------
-    args : argsparse.Namespace
-        The arguments provided to the Pypefitter CLI.
+    request : PypefitterRequest
+        The request containing all of the arguments provided via the CLI.
     """
     # first things first -- set the logging level. we do this by
     # starting at 'error' and working down. we never allow it go
     # below 'debug' though since that would disable all logging
     # and that would be bad.
-    log_level = (4 - args.verbosity) * 10 if args.verbosity < 4 else 10
+    log_level = (4 - request.verbosity) * 10 if request.verbosity < 4 else 10
     logger.setLevel(log_level)
 
 
@@ -95,23 +103,24 @@ def main(argv: List[str] = None) -> int:
     ProviderManager.load_providers()
 
     # parse the command-line arguments
-    args = parse_cli_arguments(argv)
-    if not args:
+    response: PypefitterResponse = parse_cli_arguments(argv)
+    if response.return_code != 200:
         return 1
+    request: PypefitterRequest = response.request
     logger.info('-' * 80)
-    logger.info(f"Provider.......{args.provider}")
-    logger.info(f"Emitter........{args.emitter}")
-    logger.info(f"Command........{args.command}")
-    logger.info(f"Definition.....{args.file}")
+    logger.info(f"Provider.......{request.provider}")
+    logger.info(f"Emitter........{request.emitter}")
+    logger.info(f"Command........{request.command}")
+    logger.info(f"Definition.....{request.file}")
     logger.info('-' * 80)
-    set_logging_level(args)
+    set_logging_level(request)
 
     # invoke the specific provider method
     try:
-        provider: Provider = ProviderManager.get_provider(args.provider)
-        getattr(provider, args.command)(args)
+        provider: Provider = ProviderManager.get_provider(request.provider)
+        response: PypefitterResponse = getattr(provider, request.command)(request)
     except PypefitterError:
         return 1
     finally:
         logger.info('-' * 80)
-    return 0
+    return 0 if response.return_code == 200 else response.return_code

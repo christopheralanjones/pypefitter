@@ -1,10 +1,11 @@
 """
 Defines the JenkinsProvider provider.
 """
-from pypefitter.api.provider import Provider
+from pypefitter.api import Provider
+from pypefitter.api.provider import BaseProvider
 
 
-class JenkinsProvider(Provider):
+class JenkinsProvider(BaseProvider):
     """
     Provides services related to the Jenkins platform.
     """

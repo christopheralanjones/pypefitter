@@ -1,27 +1,9 @@
-import os
 from pathlib import Path
-import pypefitter
-import conftest
-from pypefitter.api.provider import Emitter, EmitterManager, ProviderHelper, ProviderManager, \
-    PypefitterProviderNotFoundError, PypefitterEmitterNotFoundError, PypefitterError
+from pypefitter import PypefitterError
+from pypefitter.api.emitter import Emitter
+from pypefitter.api.provider import ProviderHelper
+from pypefitter.api.manager import EmitterManager, ProviderManager, PypefitterProviderNotFoundError, PypefitterEmitterNotFoundError
 import pytest
-
-
-# default_pf_text = 'pypefitter { }'
-
-
-# @pytest.fixture
-# def pf_real_file():
-#     with open(f"{pypefitter.pf_default_file}", 'w') as pf_file:
-#         pf_file.write(default_pf_text)
-#         pf_file.close()
-#     yield Path(pf_file.name)
-#     os.remove(f"{pypefitter.pf_default_file}")
-
-
-# @pytest.fixture
-# def pf_fake_file():
-#     return Path(pypefitter.pf_default_file)
 
 
 #

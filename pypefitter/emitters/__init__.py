@@ -1,10 +1,10 @@
 """
 Contains the base-class Emitters.
 """
-from pypefitter.api.provider import Emitter
+from pypefitter.api.emitter import BaseEmitter
 
 
-class JenkinsEmitter(Emitter):
+class JenkinsEmitter(BaseEmitter):
     """
     A base class for all Jenkins-related emitters.
     """
@@ -21,7 +21,7 @@ class JenkinsEmitter(Emitter):
         return 'jenkins'
 
 
-class AwsEmitter(Emitter):
+class AwsEmitter(BaseEmitter):
     """
     A base class for all AWS-related emitters.
     """

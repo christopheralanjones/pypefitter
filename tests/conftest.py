@@ -1,8 +1,7 @@
 import os
 from pathlib import Path
 import pypefitter
-from pypefitter.api.provider import ProviderManager
-from pypefitter.dsl.symbols import SymbolTable
+from pypefitter.api.manager import ProviderManager
 import pytest
 
 

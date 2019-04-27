@@ -2,10 +2,11 @@
 Defines the AwsProvider provider.
 """
 
-from pypefitter.api.provider import Provider
+from pypefitter.api import Provider
+from pypefitter.api.provider import BaseProvider
 
 
-class AwsProvider(Provider):
+class AwsProvider(BaseProvider):
     """
     Provides services related to the AWS platform.
     """

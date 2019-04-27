@@ -10,15 +10,27 @@ class CloudFormationEmitter(AwsEmitter):
     CodePipeline, CodeBuild, CodeCommit, and CodeDeploy and its associated
     files.
     """
-    @classmethod
-    def get_emitter_id(cls) -> str:
+    def __init__(self, entry_point):
         """
-        Returns the ID of the Emitter.
+        Initializes the plugin.
+
+        entry_point
+            The entry point metadata that was used to instantiate this
+            plugin. This allows the plugin to use its own metadata to mek
+            decisions regarding its behavior.
+        """
+        super().__init__(entry_point)
+
+    @classmethod
+    def get_plugin_id(cls) -> str:
+        """
+        Each class of plugin needs to have its own to help uniquely identify it
+        within its entry point.
 
         Returns
         -------
         str
-            The ID of the Emitter. This value will be unique across all
-            emitters loaded by the emitter entry point.
+            The ID of the plugin that uniquely identifies it within its entry
+            point.
         """
         return 'cloudformation'

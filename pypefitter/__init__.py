@@ -5,7 +5,8 @@ the 'providers' directory.
 import argparse
 import logging
 from pypefitter.api import PypefitterError, PypefitterRequest, PypefitterResponse
-from pypefitter.api.manager import ProviderManager
+from pypefitter.api.manager import EntryPointManager
+from pypefitter.api.provider import Emitter
 from pypefitter.api.provider import Provider
 from typing import List
 
@@ -46,10 +47,10 @@ def parse_cli_arguments(args_to_parse: List[str] = None) -> PypefitterResponse:
 
         # these will be delegated to the providers to construct
         provider_parsers = parser.add_subparsers()
-        for provider_name in ProviderManager.get_loaded_provider_names():
+        for provider_name in EntryPointManager.get_plugin_names(Provider.get_entry_point()):
             provider_parser = provider_parsers.add_parser(provider_name)
             provider_parser.set_defaults(provider=provider_name)
-            ProviderManager.get_provider(provider_name).decorate_cli(provider_parser)
+            EntryPointManager.get_plugin(Provider.get_entry_point(), provider_name).decorate_cli(provider_parser)
 
         # set some defaults
         parser.set_defaults(provider='jenkins', command='generate', emitter='jenkinsfile')
@@ -100,7 +101,8 @@ def main(argv: List[str] = None) -> int:
     """
     # find all of the providers installed as plugins
     logger.info('-' * 80)
-    ProviderManager.load_providers()
+    EntryPointManager.load_entry_point(Provider.get_entry_point())
+    EntryPointManager.load_entry_point(Emitter.get_entry_point())
 
     # parse the command-line arguments
     response: PypefitterResponse = parse_cli_arguments(argv)
@@ -117,7 +119,7 @@ def main(argv: List[str] = None) -> int:
 
     # invoke the specific provider method
     try:
-        provider: Provider = ProviderManager.get_provider(request.provider)
+        provider: Provider = EntryPointManager.get_plugin(Provider.get_entry_point(), request.provider)
         response: PypefitterResponse = getattr(provider, request.command)(request)
     except PypefitterError:
         return 1

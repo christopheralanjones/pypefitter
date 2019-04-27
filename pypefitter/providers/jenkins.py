@@ -1,26 +1,34 @@
 """
 Defines the JenkinsProvider provider.
 """
-from pypefitter.api import Provider
-from pypefitter.api.provider import BaseProvider
+from pypefitter.api.provider import Provider, BaseProvider
 
 
 class JenkinsProvider(BaseProvider):
     """
     Provides services related to the Jenkins platform.
     """
-    __instance: Provider = None
+    def __init__(self, entry_point):
+        """
+        Initializes the plugin.
 
-    def __new__(cls):
+        entry_point
+            The entry point metadata that was used to instantiate this
+            plugin. This allows the plugin to use its own metadata to mek
+            decisions regarding its behavior.
         """
-        We want to treat this class as a singleton since there's no good
-        reason to have multiple instances of it.
-        :return: The single instance of the JenkinsProvider.
-        """
-        if cls.__instance is None:
-            cls.__instance = object.__new__(cls)
-        return cls.__instance
+        super().__init__(entry_point)
 
     @classmethod
-    def get_provider_id(cls) -> str:
+    def get_plugin_id(cls) -> str:
+        """
+        Each class of plugin needs to have its own to help uniquely identify it
+        within its entry point.
+
+        Returns
+        -------
+        str
+            The ID of the plugin that uniquely identifies it within its entry
+            point.
+        """
         return 'jenkins'

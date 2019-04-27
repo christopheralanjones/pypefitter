@@ -3,11 +3,50 @@ Contains the various managers used within the API.
 """
 import pkg_resources
 import pypefitter
-from pypefitter.api import Emitter, Provider, PypefitterError
+from pypefitter.api import PypefitterError, PypefitterPlugin
 from typing import List
 
 
-class PypefitterProviderError(PypefitterError):
+# class PypefitterProviderError(PypefitterError):
+#     """
+#     A custom base exception for all Provider-related problems.
+#     """
+#     def __init__(self, message):
+#         super().__init__(message)
+#
+#
+# class PypefitterProviderNotFoundError(PypefitterProviderError):
+#     """
+#     Represents an exception where a provider is requested but cannot
+#     be found in the list of previously discovered Providers.
+#     """
+#     def __init__(self, provider_name: str):
+#         self.provider_name = provider_name
+#         super().__init__(
+#             f"Provider [{provider_name}] is not in the list of discovered providers"
+#         )
+#
+#
+# class PypefitterEmitterError(PypefitterError):
+#     """
+#     A custom base exception for all Emitter-related problems.
+#     """
+#     def __init__(self, message):
+#         super().__init__(message)
+#
+#
+# class PypefitterEmitterNotFoundError(PypefitterEmitterError):
+#     """
+#     Represents an exception where an emitter is requested but cannot
+#     be found in the list of previously discovered Emitters.
+#     """
+#     def __init__(self, emitter_name: str):
+#         self.emitter_name = emitter_name
+#         super().__init__(
+#             f"Emitter [{emitter_name}] is not in the list of discovered emitters"
+#         )
+
+class PypefitterPluginError(PypefitterError):
     """
     A custom base exception for all Provider-related problems.
     """
@@ -15,180 +54,131 @@ class PypefitterProviderError(PypefitterError):
         super().__init__(message)
 
 
-class PypefitterProviderNotFoundError(PypefitterProviderError):
+class PypefitterPluginNotFoundError(PypefitterPluginError):
     """
-    Represents an exception where a provider is requested but cannot
-    be found in the list of previously discovered Providers.
+    Represents an exception where a plugin is requested from an entry point
+    but cannot be found in the list of previously discovered plugins.
     """
-    def __init__(self, provider_name: str):
-        self.provider_name = provider_name
+    def __init__(self, entry_point: str, plugin_id: str):
+        """
+        Initializes the error.
+
+        Parameters
+        ----------
+        entry_point : str
+            The name of the entry point that was being used.
+        plugin_id : str
+            The ID of the plugin that was being requested.
+        """
+        self.entry_point = entry_point
+        self.plugin_id = plugin_id
         super().__init__(
-            f"Provider [{provider_name}] is not in the list of discovered providers"
+            f"Plugin [{plugin_id}] was not found in entry point [{entry_point}]"
         )
 
 
-class PypefitterEmitterError(PypefitterError):
+class EntryPointManager(object):
     """
-    A custom base exception for all Emitter-related problems.
+    A helper class to manage the various Pypefitter plugins.
     """
-    def __init__(self, message):
-        super().__init__(message)
 
-
-class PypefitterEmitterNotFoundError(PypefitterEmitterError):
+    __plugin_cache = {}
     """
-    Represents an exception where an emitter is requested but cannot
-    be found in the list of previously discovered Emitters.
+    A dictionary of entry points and the plugins that have been loaded for
+    each of them. There will be an entry for each entry point registered
+    using the register_entry_point method. Each such entry will then have
+    another map of plugin IDs to actual plugin instances.
     """
-    def __init__(self, emitter_name: str):
-        self.emitter_name = emitter_name
-        super().__init__(
-            f"Emitter [{emitter_name}] is not in the list of discovered emitters"
-        )
-
-
-class ProviderManager(object):
-    """
-    A helper class to manage the various Provider plugins.
-    """
-    providers = None
 
     @classmethod
-    def load_providers(cls) -> None:
+    def load_entry_point(cls, entry_point: str) -> None:
         """
-        Finds and loads the various providers that are available to Pypefitter.
-        """
-        provider_entry_point: str = 'pypefitter_providers'
+        Finds and loads the plugins for the specified entry_point.
 
-        pypefitter.logger.info(f"Loading providers from [{provider_entry_point}] entry point")
-        cls.providers = {}
-        for entry_point in pkg_resources.iter_entry_points(provider_entry_point):
-            cls.providers[entry_point.name] = (entry_point.load())()
-            pypefitter.logger.info(f"Loaded [{entry_point.name}] as [{cls.providers[entry_point.name].__class__.__name__}]")
-        pypefitter.logger.info(f"Providers from [{provider_entry_point}] entry point loaded")
-
-        # find all of the emitters installed as plugins and force them to load as well
-        EmitterManager.load_emitters()
-
-    @classmethod
-    def get_provider(cls, provider_name: str) -> Provider:
-        """
-        Returns the Provider associated with the specified name. If multiple
-        Providers have been loaded for the same name, then the first one loaded
-        will be returned.
+        If the entry point has already been loaded, it will be re-loaded,
+        which could result in other side-effects.
 
         Parameters
         ----------
-        provider_name : str
-            The name of the provider that we wish to return. The value of this
-            parameter must match to the key used in the entry point used to
-            define pypefitter providers.
+        entry_point : str
+            The name of the entry point to be loaded or re-loaded.
+        """
+        pypefitter.logger.debug(f"Preparing plugin cache for entry point [{entry_point}]")
+        cls.__plugin_cache[entry_point] = {}
+
+        pypefitter.logger.info(f"Loading plugins for [{entry_point}] entry point")
+        for plugin in pkg_resources.iter_entry_points(entry_point):
+            cls.__plugin_cache[entry_point][plugin.name] = (plugin.load())(None)
+            pypefitter.logger.info(f"Loaded [{plugin.name}] as [{cls.__plugin_cache[entry_point][plugin.name].__class__.__name__}]")
+        pypefitter.logger.info(f"Plugins from [{entry_point}] entry point loaded")
+
+    @classmethod
+    def get_plugin(cls, entry_point: str, plugin_id: str) -> object:
+        """
+        Returns the plugin from the specified entry_point with the specified
+        plugin id.
+
+        Parameters
+        ----------
+        entry_point : str
+            The name of the entry point in which we're looking for the plugin.
+        plugin_id : str
+            The ID of the plugin that we wish to return. The value of this
+            parameter must match to the key used in the entry point.
 
         Returns
         -------
-        Provider
-            The Provider associated with the provider_name or None if there
-            are no Providers associated with the provider_name.
+        object
+            The plugin associated with the plugin_id within the specified
+            entry point or None if there are no such plugins.
+
+        Raises
+        ------
+        PypefitterPluginNotFoundError
+            If no plugin with the specified ID exists within the specified
+            entry point.
         """
-        # if we don't know what the provider is, that's a problem. if we do,
-        # and if this is the first time we've been asked for it, then
-        if provider_name not in cls.providers.keys():
-            raise PypefitterProviderNotFoundError(provider_name)
-        return cls.providers[provider_name]
+        if entry_point not in cls.__plugin_cache.keys():
+            return None
+        if plugin_id not in cls.__plugin_cache[entry_point].keys():
+            raise PypefitterPluginNotFoundError(entry_point, plugin_id)
+        return cls.__plugin_cache[entry_point][plugin_id]
 
     @classmethod
-    def get_loaded_provider_names(cls) -> List[str]:
+    def get_plugins(cls, entry_point: str) -> List[PypefitterPlugin]:
         """
-        Returns a list of the names of the providers that have been loaded
-        by Pypefitter.
+        Returns a list of the names of the plugins that have been loaded
+        for the specified entry point.
+
+        Parameters
+        ----------
+        entry_point : str
+            The name of the entry point for which we want the loaded names
+
+        Returns
+        -------
+        List[PypefitterPlugin]
+            The list of the plugins that have been loaded for the specified
+            entry point or None if the entry point does not exist.
+        """
+        return list(cls.__plugin_cache[entry_point].values()) if entry_point in cls.__plugin_cache.keys() else None
+
+    @classmethod
+    def get_plugin_names(cls, entry_point: str) -> List[str]:
+        """
+        Returns a list of the names of the plugins that have been loaded
+        for the specified entry point.
+
+        Parameters
+        ----------
+        entry_point : str
+            The name of the entry point for which we want the loaded names
 
         Returns
         -------
         List[str]
-            The list of the names of the providers that have been loaded by
-            Pypefitter.
+            The list of the names of the plugins that have been loaded for
+            the specified entry point or None if the entry point does not
+            exist.
         """
-        return list(cls.providers.keys())
-
-
-class EmitterManager(object):
-    """
-    A helper class to manage the various Emitter plugins.
-    """
-    emitters = None
-
-    @classmethod
-    def load_emitters(cls) -> None:
-        """
-        Finds and loads the various emitters that are available to Pypefitter.
-        """
-        emitter_entry_point: str = 'pypefitter_emitters'
-
-        pypefitter.logger.info(f"Loading emitters from [{emitter_entry_point}] entry point")
-        cls.emitters = {}
-        for entry_point in pkg_resources.iter_entry_points(emitter_entry_point):
-            cls.emitters[entry_point.name] = (entry_point.load())()
-            pypefitter.logger.info(f"Loaded [{entry_point.name}] as [{cls.emitters[entry_point.name].__class__.__name__}]")
-        pypefitter.logger.info(f"Emitters from [{emitter_entry_point}] entry point loaded")
-
-    @classmethod
-    def get_emitter(cls, emitter_name: str) -> Emitter:
-        """
-        Returns the Emitter associated with the specified name. If multiple
-        Emitters have been loaded for the same name, then the first one loaded
-        will be returned.
-
-        Parameters
-        ----------
-        emitter_name : str
-            The name of the Emitter that we wish to return. The value of this
-            parameter must match to the key used in the entry point used to
-            define pypefitter emitters.
-
-        Returns
-        -------
-        Emitter
-            The Emitter associated with the `emitter_name` or None if there
-            are no Emitters associated with `emitter_name`.
-        """
-        if emitter_name not in cls.emitters.keys():
-            raise PypefitterEmitterNotFoundError(emitter_name)
-        return cls.emitters[emitter_name]
-
-    @classmethod
-    def get_loaded_emitter_names(cls) -> List[str]:
-        """
-        Returns a list of the names of the emitters that have been loaded
-        by Pypefitter.
-
-        Returns
-        -------
-        List[str]
-            The list of the names of the providers that have been loaded by
-            Pypefitter.
-        """
-        return list(cls.emitters.keys())
-
-    @classmethod
-    def get_loaded_emitters_names_for_provider(cls, provider_name: str) -> List[str]:
-        """
-        Returns a list of the names of the emitters that have been loaded
-        by Pypefitter.
-
-        Parameters
-        ----------
-        provider_name : str
-            The name of the Provider for which we want the list of supported
-            Emitter names.
-
-        Returns
-        -------
-        List[str]
-            The list of the names of the emitters that have been loaded by
-            Pypefitter that can support the specified provider.
-        """
-        provider_emitters: List[str] = []
-        for emitter_name, emitter_class in cls.emitters.items():
-            if getattr(emitter_class, 'emits_for_provider')(provider_name):
-                provider_emitters.append(emitter_name)
-        return provider_emitters
+        return list(cls.__plugin_cache[entry_point].keys()) if entry_point in cls.__plugin_cache.keys() else None

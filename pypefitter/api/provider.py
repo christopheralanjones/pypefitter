@@ -7,8 +7,9 @@ import errno
 import os
 from pathlib import Path
 import pypefitter
-from pypefitter.api import Provider, PypefitterError, PypefitterRequest, PypefitterResponse
-from pypefitter.api.manager import EmitterManager
+from pypefitter.api import PypefitterError, PypefitterPlugin, PypefitterRequest, PypefitterResponse
+from pypefitter.api.manager import EntryPointManager
+from pypefitter.api.emitter import Emitter
 from pypefitter.dsl.parser.PypefitterLexer import PypefitterLexer
 from pypefitter.dsl.parser.PypefitterParser import PypefitterParser
 from pypefitter.dsl.visitor import PypefitterErrorListener, PypefitterVisitor
@@ -68,7 +69,117 @@ class ProviderHelper:
         return pf_content
 
 
+class Provider(PypefitterPlugin):
+    """
+    Defines the Provider API, which is used to declare concrete Provider
+    implementations for platforms like Jenkins or AWS.
+    """
+    def __init__(self, entry_point):
+        """
+        Initializes the plugin.
+
+        entry_point
+            The entry point metadata that was used to instantiate this
+            plugin. This allows the plugin to use its own metadata to mek
+            decisions regarding its behavior.
+        """
+        super().__init__(entry_point)
+
+    @classmethod
+    def get_entry_point(cls) -> str:
+        """
+        Each class of plugin corresponds to an entry point. the plugin class
+        can define its own entry_point, but it has to have one.
+
+        Returns
+        -------
+        str
+            The name of the entry point associated with the plugin.
+        """
+        return 'pypefitter.providers'
+
+    @classmethod
+    def decorate_cli(cls, provider_parser):
+        """
+        Adds provider-specific options to the CLI.
+
+        Parameters
+        ----------
+        provider_parser
+            The argparse parser that will represent this provider
+        """
+        pass
+
+    def generate(self, request: PypefitterRequest) -> PypefitterResponse:
+        """
+        Performs the actual code generation process.
+
+        Parameters
+        ----------
+        request : PypefitterRequest
+            The request to Pypefitter, which will contain the appropriate
+            request data.
+
+        Returns
+        -------
+        PypefitterResponse
+            The response object that provides information about the request.
+        """
+        pass
+
+    def init(self, request: PypefitterRequest) -> PypefitterResponse:
+        """
+        Used to produce a default pypefitter file to help teams bootstrap
+        the process. This might be affected by the type of the Provider
+        so we allow them the ability to override.
+
+        Parameters
+        ----------
+        request : PypefitterRequest
+            The request to Pypefitter, which will contain the appropriate
+            request data.
+
+        Returns
+        -------
+        PypefitterResponse
+            The response object that provides information about the request.
+        """
+        pass
+
+    def validate(self, request: PypefitterRequest) -> PypefitterResponse:
+        """
+        Performs a validation step to ensure that there is enough information
+        provided that a subsequent code generation request will succeed.
+
+        Parameters
+        ----------
+        request : PypefitterRequest
+            The request to Pypefitter, which will contain the appropriate
+            request data.
+
+        Returns
+        -------
+        PypefitterResponse
+            The response object that provides information about the request.
+        """
+        pass
+
+
 class BaseProvider(Provider):
+    """
+    The base class for all concrete Providers.
+    """
+    def __init__(self, entry_point):
+        """
+        Initializes the plugin.
+
+        entry_point
+            The entry point metadata that was used to instantiate this
+            plugin. This allows the plugin to use its own metadata to mek
+            decisions regarding its behavior.
+        """
+        super().__init__(entry_point)
+
     @classmethod
     def decorate_cli(cls, provider_parser) -> None:
         """
@@ -80,20 +191,21 @@ class BaseProvider(Provider):
             The argparse parser that will represent this provider
         """
         # get the list of emitters for the provider
-        emitters: List[str] = \
-            EmitterManager.get_loaded_emitters_names_for_provider(cls.get_provider_id())
+        emitters: List[Emitter] = \
+           list(filter(lambda emitter: emitter.is_compatible_with(cls.get_plugin_id()), EntryPointManager.get_plugins(Emitter.get_entry_point())))
+        emitter_names = list(map(lambda emitter: emitter.get_plugin_id(), emitters))
 
         # now setup some commands and whatever sub-arguments they require
         command_parser = provider_parser.add_subparsers(title='command')
         command_parser.add_parser('init').set_defaults(command='init')
         command_parser.add_parser('validate').set_defaults(command='validate')
         generate_parser = command_parser.add_parser('generate')
-        generate_parser.set_defaults(command='generate', emitter=emitters[0])
-        generate_parser.add_argument('emitter', choices=emitters, nargs='?', default=emitters[0],
+        generate_parser.set_defaults(command='generate', emitter=emitters[0].get_plugin_id())
+        generate_parser.add_argument('emitter', choices=emitter_names, nargs='?', default=emitters[0].get_plugin_id(),
                                      help='The style of output to be produced')
 
         # assign some global defaults to make it easier to have a fast cli
-        provider_parser.set_defaults(provider=cls.get_provider_id(), command='generate', emitter=emitters[0])
+        provider_parser.set_defaults(provider=cls.get_plugin_id(), command='generate', emitter=emitters[0].get_plugin_id())
 
     def generate(self, request: PypefitterRequest) -> PypefitterResponse:
         """

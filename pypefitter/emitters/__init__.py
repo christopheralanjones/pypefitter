@@ -8,17 +8,34 @@ class JenkinsEmitter(BaseEmitter):
     """
     A base class for all Jenkins-related emitters.
     """
-    @classmethod
-    def get_provider_id(cls) -> str:
+    def __init__(self, entry_point):
         """
-        Returns the ID of the Provider to which this Emitter is associated.
+        Initializes the plugin.
+
+        entry_point
+            The entry point metadata that was used to instantiate this
+            plugin. This allows the plugin to use its own metadata to mek
+            decisions regarding its behavior.
+        """
+        super().__init__(entry_point)
+
+    @classmethod
+    def is_compatible_with(cls, plugin_id: str) -> bool:
+        """
+        Determines if this plugin is compatible with the specified plkugin ID.
+
+        Parameters
+        ----------
+        plugin_id : str
+            The ID of the plugin for which we're testing compatibility.
 
         Returns
         -------
-        str
-            The unique ID of the Provider for which this Emitter will emit.
+        bool
+            True if this plugin is compatible with the one identified by the
+            plugin_id and False otherwise. By default we assume compatibility.
         """
-        return 'jenkins'
+        return plugin_id == 'jenkins'
 
 
 class AwsEmitter(BaseEmitter):
@@ -26,13 +43,19 @@ class AwsEmitter(BaseEmitter):
     A base class for all AWS-related emitters.
     """
     @classmethod
-    def get_provider_id(cls) -> str:
+    def is_compatible_with(cls, plugin_id: str) -> bool:
         """
-        Returns the ID of the Provider to which this Emitter is associated.
+        Determines if this plugin is compatible with the specified plkugin ID.
+
+        Parameters
+        ----------
+        plugin_id : str
+            The ID of the plugin for which we're testing compatibility.
 
         Returns
         -------
-        str
-            The unique ID of the Provider for which this Emitter will emit.
+        bool
+            True if this plugin is compatible with the one identified by the
+            plugin_id and False otherwise. By default we assume compatibility.
         """
-        return 'aws'
+        return plugin_id == 'aws'

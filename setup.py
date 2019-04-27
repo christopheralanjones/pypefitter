@@ -100,11 +100,11 @@ setup(
         'console_scripts': [
             'pypefitter=pypefitter:main',
         ],
-        'pypefitter_providers': [
+        'pypefitter.providers': [
             'jenkins=pypefitter.providers.jenkins:JenkinsProvider',
             'aws=pypefitter.providers.aws:AwsProvider'
         ],
-        'pypefitter_emitters': [
+        'pypefitter.emitters': [
             'jenkinsfile=pypefitter.emitters.jenkinsfile:JenkinsfileEmitter',
             'terraform=pypefitter.emitters.terraform:TerraformEmitter',
             'cloudformation=pypefitter.emitters.cloudformation:CloudFormationEmitter',

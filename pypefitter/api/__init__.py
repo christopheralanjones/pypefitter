@@ -60,140 +60,64 @@ class PypefitterResponse(object):
         self.__dict__.update(kwargs)
 
 
-class Provider(ABC):
+class PypefitterPlugin(ABC):
     """
-    Defines the Provider API, which is used to declare concrete Provider
-    implementations for platforms like Jenkins or AWS.
+    Defines a base class for all pluggable aspects of Pypefitter.
     """
+    def __init__(self, entry_point):
+        """
+        Initializes the plugin.
+
+        entry_point
+            The entry point metadata that was used to instantiate this
+            plugin. This allows the plugin to use its own metadata to mek
+            decisions regarding its behavior.
+        """
+        self.entry_point = entry_point
+
     @classmethod
     @abstractmethod
-    def get_provider_id(cls) -> str:
+    def get_entry_point(cls) -> str:
         """
-        Returns the unique id of the provider.
+        Each class of plugin corresponds to an entry point. the plugin class
+        can define its own entry_point, but it has to have one.
 
         Returns
         -------
         str
-            The unique id of the provider.
-        """
-        pass
-
-    @classmethod
-    def decorate_cli(cls, provider_parser):
-        """
-        Adds provider-specific options to the CLI.
-
-        Parameters
-        ----------
-        provider_parser
-            The argparse parser that will represent this provider
-        """
-        pass
-
-    def generate(self, request: PypefitterRequest) -> PypefitterResponse:
-        """
-        Performs the actual code generation process.
-
-        Parameters
-        ----------
-        request : PypefitterRequest
-            The request to Pypefitter, which will contain the appropriate
-            request data.
-
-        Returns
-        -------
-        PypefitterResponse
-            The response object that provides information about the request.
-        """
-        pass
-
-    def init(self, request: PypefitterRequest) -> PypefitterResponse:
-        """
-        Used to produce a default pypefitter file to help teams bootstrap
-        the process. This might be affected by the type of the Provider
-        so we allow them the ability to override.
-
-        Parameters
-        ----------
-        request : PypefitterRequest
-            The request to Pypefitter, which will contain the appropriate
-            request data.
-
-        Returns
-        -------
-        PypefitterResponse
-            The response object that provides information about the request.
-        """
-        pass
-
-    def validate(self, request: PypefitterRequest) -> PypefitterResponse:
-        """
-        Performs a validation step to ensure that there is enough information
-        provided that a subsequent code generation request will succeed.
-
-        Parameters
-        ----------
-        request : PypefitterRequest
-            The request to Pypefitter, which will contain the appropriate
-            request data.
-
-        Returns
-        -------
-        PypefitterResponse
-            The response object that provides information about the request.
-        """
-        pass
-
-
-class Emitter(ABC):
-    """
-    Each emitter understands how to emit code. Each emitter works on behalf of
-    a single Provider, which means that each provider can support more than one
-    Emitter.
-    """
-    @classmethod
-    @abstractmethod
-    def get_emitter_id(cls) -> str:
-        """
-        Returns the ID of the Emitter.
-
-        Returns
-        -------
-        str
-            The ID of the Emitter. This value will be unique across all
-            emitters loaded by the emitter entry point.
+            The name of the entry point associated with the plugin.
         """
         pass
 
     @classmethod
     @abstractmethod
-    def get_provider_id(cls) -> str:
+    def get_plugin_id(cls) -> str:
         """
-        Returns the ID of the Provider to which this Emitter is associated.
+        Each class of plugin needs to have its own to help uniquely identify it
+        within its entry point.
 
         Returns
         -------
         str
-            The unique ID of the Provider for which this Emitter will emit.
+            The ID of the plugin that uniquely identifies it within its entry
+            point.
         """
         pass
 
     @classmethod
-    def emits_for_provider(cls, provider_name: str) -> bool:
+    def is_compatible_with(cls, plugin_id: str) -> bool:
         """
-        Indicates whether or not this Emitter can emit on behalf of the
-        specified Provider.
+        Determines if this plugin is compatible with the specified plkugin ID.
 
         Parameters
         ----------
-        provider_name : str
-            The name of the provider as defined in the pypefitter_providers
-            entry point.
+        plugin_id : str
+            The ID of the plugin for which we're testing compatibility.
 
         Returns
         -------
         bool
-            True if the Emitter will emit for the Provider with `provider_name`
-            and False otherwise.
+            True if this plugin is compatible with the one identified by the
+            plugin_id and False otherwise. By default we assume compatibility.
         """
-        return provider_name.lower() == cls.get_provider_id()
+        return True

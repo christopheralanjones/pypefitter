@@ -32,7 +32,7 @@ class Emitter(PypefitterPlugin):
         PypefitterRequestBuilder
             The request builder for the plugin.
         """
-        return PypefitterEmitterCLIRequestBuilder()
+        return None
 
     @classmethod
     def get_entry_point(cls) -> str:

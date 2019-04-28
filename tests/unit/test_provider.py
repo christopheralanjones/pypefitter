@@ -1,7 +1,8 @@
 from pathlib import Path
 from pypefitter import PypefitterError
 from pypefitter.api.manager import PypefitterPluginNotFoundError, EntryPointManager
-from pypefitter.api.provider import ProviderHelper, Provider
+from pypefitter.api.parser import PypefitterParserHelper
+from pypefitter.api.provider import Provider
 import pytest
 
 
@@ -10,12 +11,12 @@ import pytest
 #
 
 def test_provider_helper_reads_real_file(pf_real_file: Path, pf_definition: str):
-    assert ProviderHelper.read_pypefitter_file(pf_real_file) == pf_definition
+    assert PypefitterParserHelper.read_pypefitter_file(pf_real_file) == pf_definition
 
 
 def test_provider_helper_does_not_read_missing_file(pf_fake_file):
     with pytest.raises(PypefitterError):
-        ProviderHelper.read_pypefitter_file(pf_fake_file)
+        PypefitterParserHelper.read_pypefitter_file(pf_fake_file)
 
 
 #

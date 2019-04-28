@@ -58,7 +58,7 @@ setup(
     #
     # For an analysis of "install_requires" vs pip's requirements files see:
     # https://packaging.python.org/en/latest/requirements.html
-    install_requires=['antlr4-python3-runtime>=4.7', 'jinja2>=2.10'],
+    install_requires=['antlr4-python3-runtime>=4.7', 'argparse>=1.4.0', 'jinja2>=2.10'],
 
     # List additional groups of dependencies here (e.g. development
     # dependencies). Users will be able to install these using the "extras"
@@ -103,6 +103,11 @@ setup(
         'pypefitter.providers': [
             'jenkins=pypefitter.providers.jenkins:JenkinsProvider',
             'aws=pypefitter.providers.aws:AwsProvider'
+        ],
+        'pypefitter.providers.actions': [
+            'generate=pypefitter.api.action:GenerateAction',
+            'init=pypefitter.api.action:InitAction',
+            'validate=pypefitter.api.action:ValidateAction'
         ],
         'pypefitter.providers.jenkins.emitters': [
             'jenkinsfile=pypefitter.emitters.jenkinsfile:JenkinsfileEmitter'

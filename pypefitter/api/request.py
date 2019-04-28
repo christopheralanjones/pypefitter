@@ -7,21 +7,21 @@ class PypefitterRequest(object):
     """
     A request provided to the Pypefitter API.
     """
-    def __init__(self, command: str, provider: str, file: str, **kwargs):
+    def __init__(self, action: str, provider: str, file: str, **kwargs):
         """
         Initializes the PypefitterRequest. The kwargs can contain arbitrary
         data, but it must be understood by the receiver of the request.
 
         Parameters
         ----------
-        command : str
-            The name of the command to be executed.
+        action : str
+            The name of the action to be executed.
         provider :  str
             The name of the provider to be used.
         file : str
             The full path to the file to be used.
         """
-        self.command = command
+        self.action = action
         self.file = file
         self.provider = provider
         self.__dict__.update(kwargs)

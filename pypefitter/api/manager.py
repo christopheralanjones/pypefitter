@@ -7,45 +7,6 @@ from pypefitter.api import PypefitterError, PypefitterPlugin
 from typing import List
 
 
-# class PypefitterProviderError(PypefitterError):
-#     """
-#     A custom base exception for all Provider-related problems.
-#     """
-#     def __init__(self, message):
-#         super().__init__(message)
-#
-#
-# class PypefitterProviderNotFoundError(PypefitterProviderError):
-#     """
-#     Represents an exception where a provider is requested but cannot
-#     be found in the list of previously discovered Providers.
-#     """
-#     def __init__(self, provider_name: str):
-#         self.provider_name = provider_name
-#         super().__init__(
-#             f"Provider [{provider_name}] is not in the list of discovered providers"
-#         )
-#
-#
-# class PypefitterEmitterError(PypefitterError):
-#     """
-#     A custom base exception for all Emitter-related problems.
-#     """
-#     def __init__(self, message):
-#         super().__init__(message)
-#
-#
-# class PypefitterEmitterNotFoundError(PypefitterEmitterError):
-#     """
-#     Represents an exception where an emitter is requested but cannot
-#     be found in the list of previously discovered Emitters.
-#     """
-#     def __init__(self, emitter_name: str):
-#         self.emitter_name = emitter_name
-#         super().__init__(
-#             f"Emitter [{emitter_name}] is not in the list of discovered emitters"
-#         )
-
 class PypefitterPluginError(PypefitterError):
     """
     A custom base exception for all Provider-related problems.
@@ -141,7 +102,7 @@ class EntryPointManager(object):
         if entry_point not in cls.__plugin_cache.keys():
             cls.load_plugins(entry_point)
         if entry_point not in cls.__plugin_cache.keys():
-            return None
+            raise PypefitterPluginNotFoundError(entry_point, plugin_id)
         if plugin_id not in cls.__plugin_cache[entry_point].keys():
             raise PypefitterPluginNotFoundError(entry_point, plugin_id)
         return cls.__plugin_cache[entry_point][plugin_id]

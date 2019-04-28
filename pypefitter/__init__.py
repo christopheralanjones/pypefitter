@@ -4,7 +4,8 @@ the 'providers' directory.
 """
 import argparse
 import logging
-from pypefitter.api import PypefitterError, PypefitterRequest, PypefitterResponse
+from pypefitter.api import PypefitterError
+from pypefitter.api.request import PypefitterRequest, PypefitterResponse
 from pypefitter.api.builder import PypefitterRequestBuilder
 from pypefitter.api.provider import Provider
 from typing import List
@@ -47,7 +48,7 @@ class PypefitterCLIRequestBuilder(PypefitterRequestBuilder):
             provider.get_cli_builder().assemble(**{'provider': provider, 'parser': provider_parser})
 
         # set some defaults
-        parser.set_defaults(provider='jenkins', command='generate', emitter='jenkinsfile')
+        parser.set_defaults(provider='jenkins', action='generate', emitter='jenkinsfile')
 
     @classmethod
     def build(cls, **kwargs) -> PypefitterRequest:
@@ -71,7 +72,7 @@ class PypefitterCLIRequestBuilder(PypefitterRequestBuilder):
 
             # assuming we can, we then package everything up
             request: PypefitterRequest = \
-                PypefitterRequest(parsed_args.command, parsed_args.provider, parsed_args.file,
+                PypefitterRequest(parsed_args.action, parsed_args.provider, parsed_args.file,
                                   **{'emitter': parsed_args.emitter, 'verbosity': parsed_args.verbosity})
         except SystemExit:
             request: PypefitterRequest = None
@@ -117,7 +118,7 @@ def main(argv: List[str] = None) -> int:
     logger.info('-' * 80)
     logger.info(f"Provider.......{request.provider}")
     logger.info(f"Emitter........{request.emitter}")
-    logger.info(f"Command........{request.command}")
+    logger.info(f"Action.........{request.action}")
     logger.info(f"Definition.....{request.file}")
     logger.info('-' * 80)
     set_logging_level(request)
@@ -125,7 +126,7 @@ def main(argv: List[str] = None) -> int:
     # invoke the specific provider method
     try:
         provider: Provider = Provider.get_provider(request.provider)
-        response: PypefitterResponse = getattr(provider, request.command)(request)
+        response: PypefitterResponse = provider.do_action(request)
     except PypefitterError:
         return 1
     finally:

@@ -1,8 +1,6 @@
 from pathlib import Path
 from pypefitter import PypefitterError
-from pypefitter.api import PypefitterPlugin
 from pypefitter.api.manager import PypefitterPluginNotFoundError, EntryPointManager
-from pypefitter.api.emitter import Emitter
 from pypefitter.api.provider import ProviderHelper, Provider
 import pytest
 

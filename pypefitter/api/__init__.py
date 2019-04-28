@@ -3,6 +3,8 @@ The API package contains the shareable elements of pypefitter that allow
 the plugins to integrate with the main framework.
 """
 from abc import ABC, abstractmethod
+from pypefitter.api.builder import PypefitterPluginCLIRequestBuilder
+from pypefitter.api.request import PypefitterRequest, PypefitterResponse
 
 
 class PypefitterError(Exception):
@@ -13,67 +15,48 @@ class PypefitterError(Exception):
         self.message = message
 
 
-class PypefitterRequest(object):
+class PypefitterAction(ABC):
     """
-    A request provided to the Pypefitter API.
+    Represents an action that can be performed within Pypefitter. These
+    actions are intended to encapsulate the logic that performs those
+    actions and makes it possible to extend the capabilities of the various
+    providers.
     """
-    def __init__(self, command: str, provider: str, file: str, **kwargs):
+    @abstractmethod
+    def doAction(self, request: PypefitterRequest) -> PypefitterResponse:
         """
-        Initializes the PypefitterRequest. The kwargs can contain arbitrary
-        data, but it must be understood by the receiver of the request.
+        Performs the action.
 
         Parameters
         ----------
-        command : str
-            The name of the command to be executed.
-        provider :  str
-            The name of the provider to be used.
-        file : str
-            The full path to the file to be used.
-        """
-        self.command = command
-        self.file = file
-        self.provider = provider
-        self.__dict__.update(kwargs)
+        request : PypefitterRequest
+            The request that encapsulates all of the information acquired
+            when pypefitter was invoked.
 
-
-class PypefitterResponse(object):
-    """
-    A response provided by the Pypefitter API resulting from a
-    PypefitterRequest.
-    """
-    def __init__(self, return_code: int = 200, reason: str = 'OK', **kwargs):
+        Returns
+        -------
+        PypefitterResponse
+            The result of the request being performed.
         """
-        Initializes the PypefitterResponse
-
-        Parameters
-        ----------
-        return_code : str
-            The code representing the response. As much as possible we try to
-            adhere to HTTP response codes, but this isn't mandatory.
-        reason : str
-            Any text that can help shed light on why the `return_code` is what
-            it is.
-        """
-        self.return_code = return_code
-        self.reason = reason
-        self.__dict__.update(kwargs)
+        pass
 
 
 class PypefitterPlugin(ABC):
     """
     Defines a base class for all pluggable aspects of Pypefitter.
     """
-    def __init__(self, entry_point):
+    @classmethod
+    @abstractmethod
+    def get_cli_builder(cls) -> PypefitterPluginCLIRequestBuilder:
         """
-        Initializes the plugin.
+        The request builder that will be used to augment the CLI.
 
-        entry_point
-            The entry point metadata that was used to instantiate this
-            plugin. This allows the plugin to use its own metadata to mek
-            decisions regarding its behavior.
+        Returns
+        -------
+        PypefitterRequestBuilder
+            The request builder for the plugin.
         """
-        self.entry_point = entry_point
+        pass
 
     @classmethod
     @abstractmethod

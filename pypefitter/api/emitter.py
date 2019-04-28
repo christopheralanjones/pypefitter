@@ -2,24 +2,37 @@
 Contains API-related elements related to emitters.
 """
 from pypefitter.api import PypefitterPlugin
+from pypefitter.api.builder import PypefitterPluginCLIRequestBuilder
+
+
+class PypefitterEmitterCLIRequestBuilder(PypefitterPluginCLIRequestBuilder):
+    """
+    The builder is used to construct Pypefitter requests from other sources.
+
+    The most common use of this pattern is build Pypefitter requests from
+    the CLI.
+    """
+    @classmethod
+    def assemble(cls, **kwargs) -> None:
+        pass
 
 
 class Emitter(PypefitterPlugin):
     """
-    Each emitter understands how to emit code. Each emitter works on behalf of
-    a single Provider, which means that each provider can support more than one
-    Emitter.
+    The abstract base class for all emitters. New Emitters should extend the
+    BaseEmitter class instead.
     """
-    def __init__(self, entry_point):
+    @classmethod
+    def get_cli_builder(cls) -> PypefitterPluginCLIRequestBuilder:
         """
-        Initializes the plugin.
+        The request builder that will be used to augment the CLI.
 
-        entry_point
-            The entry point metadata that was used to instantiate this
-            plugin. This allows the plugin to use its own metadata to mek
-            decisions regarding its behavior.
+        Returns
+        -------
+        PypefitterRequestBuilder
+            The request builder for the plugin.
         """
-        super().__init__(entry_point)
+        return PypefitterEmitterCLIRequestBuilder()
 
     @classmethod
     def get_entry_point(cls) -> str:
@@ -33,21 +46,3 @@ class Emitter(PypefitterPlugin):
             The name of the entry point associated with the plugin.
         """
         return 'pypefitter.emitters'
-
-
-class BaseEmitter(Emitter):
-    """
-    Each emitter understands how to emit code. Each emitter works on behalf of
-    a single Provider, which means that each provider can support more than one
-    Emitter.
-    """
-    def __init__(self, entry_point):
-        """
-        Initializes the plugin.
-
-        entry_point
-            The entry point metadata that was used to instantiate this
-            plugin. This allows the plugin to use its own metadata to mek
-            decisions regarding its behavior.
-        """
-        super().__init__(entry_point)

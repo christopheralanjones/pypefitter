@@ -108,7 +108,7 @@ class EntryPointManager(object):
         for plugin in pkg_resources.iter_entry_points(entry_point):
             if entry_point not in cls.__plugin_cache:
                 cls.__plugin_cache[entry_point] = {}
-            cls.__plugin_cache[entry_point][plugin.name] = (plugin.load())(None)
+            cls.__plugin_cache[entry_point][plugin.name] = (plugin.load())()
             pypefitter.logger.info(f"Loaded [{plugin.name}] as [{cls.__plugin_cache[entry_point][plugin.name].__class__.__name__}]")
         pypefitter.logger.info(f"Plugins from [{entry_point}] entry point loaded")
 

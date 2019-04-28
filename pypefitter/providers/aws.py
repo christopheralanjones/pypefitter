@@ -1,24 +1,13 @@
 """
 Defines the AwsProvider provider.
 """
-from pypefitter.api.provider import BaseProvider
+from pypefitter.api.provider import Provider
 
 
-class AwsProvider(BaseProvider):
+class AwsProvider(Provider):
     """
     Provides services related to the AWS platform.
     """
-    def __init__(self, entry_point):
-        """
-        Initializes the plugin.
-
-        entry_point
-            The entry point metadata that was used to instantiate this
-            plugin. This allows the plugin to use its own metadata to mek
-            decisions regarding its behavior.
-        """
-        super().__init__(entry_point)
-
     @classmethod
     def get_plugin_id(cls) -> str:
         """

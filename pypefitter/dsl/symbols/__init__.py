@@ -59,7 +59,8 @@ class SymbolTable(object):
     """
     class Symbol(object):
         """
-        A symbol is an entry in the symbol table.
+        A symbol is an entry in the symbol table. Each symbol has its own
+        SymbolTable, which is used to manage the symbols within its scope.
         """
         def __init__(self, name: str, symbol_type: SymbolType, **kwargs):
             """
@@ -83,13 +84,14 @@ class SymbolTable(object):
                 raise ValueError('Parameter ''symbol_type'' is required')
             self.name = name
             self.symbol_type = symbol_type
+            self.symbol_table = SymbolTable()
             self.__dict__.update(kwargs)
 
     def __init__(self, parent=None):
         self.parent = parent
         self.symbols: List[SymbolTable.Symbol] = []
 
-    def add_symbol(self, name: str, symbol_type: SymbolType, **kwargs) -> None:
+    def add_symbol(self, name: str, symbol_type: SymbolType, **kwargs) -> Symbol:
         """
         Adds the specified Symbol to the SymbolTable.
 
@@ -100,6 +102,11 @@ class SymbolTable(object):
         symbol_type : SymbolType
             The type of the Symbol. This value is required.
 
+        Returns
+        -------
+        Symbol
+            The symbol that was added to the symbol table.
+
         Raises
         ------
         DuplicateSymbolError
@@ -109,7 +116,9 @@ class SymbolTable(object):
         """
         if self.find_symbol(name, symbol_type):
             raise DuplicateSymbolError(name, symbol_type, self)
-        self.symbols.append(SymbolTable.Symbol(name, symbol_type, **kwargs))
+        new_symbol: SymbolTable.Symbol = SymbolTable.Symbol(name, symbol_type, **kwargs)
+        self.symbols.append(new_symbol)
+        return new_symbol
 
     def find_symbol(self, name: str, symbol_type: SymbolType) -> Symbol:
         """

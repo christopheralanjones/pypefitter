@@ -8,6 +8,7 @@ from pypefitter.api import PypefitterError
 from pypefitter.dsl.symbols import SymbolType, SymbolTable
 from pypefitter.dsl.parser.PypefitterParser import PypefitterParser
 from pypefitter.dsl.parser.PypefitterVisitor import PypefitterVisitor
+from typing import List
 
 
 class PypefitterErrorListener(ErrorListener):
@@ -42,7 +43,16 @@ class AbstractPypefitterVisitor(PypefitterVisitor):
     the visitor per se, but since these are extensions to the parser it will do
     for now.
     """
-    symbol_table: SymbolTable = SymbolTable()
+
+    global_symbol_table: SymbolTable = SymbolTable()
+    """
+    Holds the global symbol to which all of the elements should have access.
+    """
+
+    symbol_table_stack: List[SymbolTable] = []
+    """
+    Holds the stack of symbol tables that is used during parsing.
+    """
 
 
 class PypefitterVisitor(AbstractPypefitterVisitor):
@@ -51,8 +61,28 @@ class PypefitterVisitor(AbstractPypefitterVisitor):
     """
     def visitPypefitter(self, ctx: PypefitterParser.PypefitterContext) -> None:
         pypefitter.logger.debug(f"Initializing symbol table")
-        AbstractPypefitterVisitor.symbol_table = SymbolTable()
+        AbstractPypefitterVisitor.global_symbol_table = SymbolTable()
         pypefitter.logger.debug(f"Pypefitter visitor started")
         pypeline_name = ctx.stage_body().name.text
-        AbstractPypefitterVisitor.symbol_table.add_symbol(pypeline_name, SymbolType.PYPELINE)
+
+        # add the symbol to the global symbol table and then add the pypeline
+        # symbol table to the stack so that the next set of elements can be
+        # processed.
+        pypeline_symbol: SymbolTable.Symbol = \
+            AbstractPypefitterVisitor.global_symbol_table.add_symbol(pypeline_name, SymbolType.PYPELINE)
+        AbstractPypefitterVisitor.symbol_table_stack.append(pypeline_symbol.symbol_table)
+
+        # parse the children and pop the stack
+        for stage in ctx.stage_body().stage():
+            self.visitStage(stage.stage_body())
+        AbstractPypefitterVisitor.symbol_table_stack.pop()
         pypefitter.logger.debug(f"Pypefitter visitor ended")
+
+    def visitStage_body(self, ctx: PypefitterParser.Stage_bodyContext):
+        pypefitter.logger.debug(f"Pypefitter visitor started")
+        stage_name = ctx.name.text
+        stage_symbol: SymbolTable.Symbol = \
+            AbstractPypefitterVisitor.symbol_table_stack[-1].add_symbol(stage_name, SymbolType.STAGE)
+        print(stage_symbol)
+        AbstractPypefitterVisitor.symbol_table_stack.append(stage_symbol.symbol_table)
+        AbstractPypefitterVisitor.symbol_table_stack.pop()

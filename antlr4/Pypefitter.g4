@@ -9,7 +9,15 @@ pypefitter
     ;
 
 event_decl
-    : event_type
+    : event_type event_condition? event_action
+    ;
+
+event_action
+    : FSLASH action=Identifier
+    ;
+
+event_condition
+    : LBRACK  RBRACK
     ;
 
 event_type
@@ -47,6 +55,7 @@ RBRACK : ']';
 SEMI   : ';';
 COMMA  : ',';
 DOT    : '.';
+FSLASH : '/';
 
 
 /*
@@ -65,6 +74,32 @@ fragment
 LetterOrDigit
 	:	[a-zA-Z0-9_]
 	;
+
+
+/*
+** STRINGS
+*/
+
+StringLiteral
+	:	'"' StringCharacters? '"'
+	;
+
+fragment
+StringCharacters
+	:	StringCharacter+
+	;
+
+fragment
+StringCharacter
+	:	~["\\\r\n]
+	|	EscapeSequence
+	;
+
+fragment
+EscapeSequence
+	:	'\\' [btnfr"'\\]
+	;
+
 
 /*
 ** WHITESPACE AND COMMENTS

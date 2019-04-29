@@ -1,7 +1,5 @@
-#from pypefitter.api.model import PypefitterModelObject, Pypeline
 from pypefitter.dsl.symbols import SymbolType, SymbolTable, DuplicateSymbolError
 import pytest
-from typing import List
 
 
 @pytest.mark.parametrize(
@@ -34,7 +32,11 @@ def test_duplicate_symbol_error(name: str, symbol_type: SymbolType, table: Symbo
 )
 def test_symbol_builders(name: str, symbol_type: SymbolType, expected: bool):
     if expected:
-        assert SymbolTable.Symbol(name, symbol_type)
+        symbol = SymbolTable.Symbol(name, symbol_type)
+        assert symbol is not None
+        assert symbol.name == name
+        assert symbol.symbol_type == symbol_type
+        assert symbol.symbol_table is not None
     else:
         with pytest.raises(ValueError):
             assert SymbolTable.Symbol(name, symbol_type)

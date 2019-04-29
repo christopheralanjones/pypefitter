@@ -2,10 +2,9 @@
 Defines the classes that are used to implement providers for the various
 platforms.
 """
-from pypefitter.api.plugin import PypefitterPlugin
 from pypefitter.api.builder import PypefitterPluginCLIRequestBuilder, PypefitterProviderCLIRequestBuilder
 from pypefitter.api.emitter import Emitter
-from pypefitter.api.plugin import PluginManager, PypefitterPluginNotFoundError
+from pypefitter.api.plugin import PluginManager, PypefitterPlugin, PypefitterPluginNotFoundError
 from pypefitter.api.request import PypefitterRequest, PypefitterResponse
 from typing import List
 

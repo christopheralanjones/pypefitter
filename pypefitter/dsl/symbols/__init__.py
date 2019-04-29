@@ -3,6 +3,7 @@ This module contains the symbol table constructs and logic that underpin
 the Pypefitter parser and code generator.
 """
 from enum import Enum, unique
+import pypefitter
 from pypefitter.api import PypefitterError
 from typing import List
 
@@ -11,6 +12,7 @@ from typing import List
 class SymbolType(Enum):
     PYPELINE = 1,
     STAGE = 2
+    EVENT = 3
 
 
 class DuplicateSymbolError(PypefitterError):
@@ -85,7 +87,7 @@ class SymbolTable(object):
             self.name = name
             self.symbol_type = symbol_type
             self.symbol_table = SymbolTable()
-            self.__dict__.update(kwargs)
+            self.attributes = kwargs
 
     def __init__(self, parent=None):
         self.parent = parent
@@ -141,3 +143,12 @@ class SymbolTable(object):
         matching_symbols: List[SymbolTable.Symbol] = \
             list(filter(lambda symbol: symbol.name == name and symbol.symbol_type == symbol_type, self.symbols))
         return matching_symbols[0] if len(matching_symbols) != 0 else None
+
+    def print(self, indent: int = 0) -> None: # pragma: no cover
+        """
+        Prints the symbol table in human-readable format.
+        """
+        for symbol in self.symbols:
+            leading_spaces: str = '' if indent == 0 else ' ' * 2 * indent
+            pypefitter.logger.debug(f"{leading_spaces}{symbol.name} [{symbol.symbol_type}] {symbol.attributes}")
+            symbol.symbol_table.print(indent+1)

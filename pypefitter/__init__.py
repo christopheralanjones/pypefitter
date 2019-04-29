@@ -4,7 +4,6 @@ the 'providers' directory.
 """
 import argparse
 import logging
-from pypefitter.api import PypefitterError
 from pypefitter.api.request import PypefitterRequest, PypefitterResponse
 from pypefitter.api.builder import PypefitterRequestBuilder
 from pypefitter.api.provider import Provider

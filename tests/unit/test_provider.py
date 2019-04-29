@@ -1,5 +1,5 @@
 from pathlib import Path
-from pypefitter import PypefitterError
+from pypefitter.api import PypefitterError
 from pypefitter.api.plugin import PypefitterPluginNotFoundError, PluginManager
 from pypefitter.api.parser import PypefitterParserHelper
 from pypefitter.api.provider import Provider

@@ -9,19 +9,25 @@ pypefitter
     ;
 
 event_decl
-    : event_type event_condition? event_action
+    : event_name event_condition_decl? event_action
     ;
 
 event_action
     : FSLASH action=Identifier
     ;
 
-event_condition
-    : LBRACK  RBRACK
+event_condition_decl
+    : LBRACK  event_condition RBRACK
     ;
 
-event_type
-    : ON_ENTER | ON_EXIT
+event_condition
+    : name=FAILURE
+    | name=SUCCESS
+    ;
+
+event_name
+    : name=ON_ENTER
+    | name=ON_EXIT
     ;
 
 stage
@@ -37,10 +43,12 @@ stage_body
 /*
 ** KEYWORDS
 */
+FAILURE : 'failure';
 ON_ENTER : 'on_enter';
 ON_EXIT : 'on_exit';
 PYPEFITTER : 'pypefitter';
 STAGE : 'stage';
+SUCCESS : 'success';
 
 
 /*

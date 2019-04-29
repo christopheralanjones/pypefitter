@@ -11,7 +11,7 @@ from pypefitter.dsl.parser.PypefitterVisitor import PypefitterVisitor
 from typing import List
 
 
-class PypefitterErrorListener(ErrorListener):
+class PypefitterErrorListener(ErrorListener): # pragma: no cover
     """
     A custom error listener so that we can terminate the parse on bad
     input.
@@ -72,17 +72,45 @@ class PypefitterVisitor(AbstractPypefitterVisitor):
             AbstractPypefitterVisitor.global_symbol_table.add_symbol(pypeline_name, SymbolType.PYPELINE)
         AbstractPypefitterVisitor.symbol_table_stack.append(pypeline_symbol.symbol_table)
 
-        # parse the children and pop the stack
+        # look for events and nested stages
+        for event in ctx.stage_body().event_decl():
+            self.visitEvent_decl(event)
         for stage in ctx.stage_body().stage():
-            self.visitStage(stage.stage_body())
+            self.visitStage_body(stage.stage_body())
+
         AbstractPypefitterVisitor.symbol_table_stack.pop()
         pypefitter.logger.debug(f"Pypefitter visitor ended")
+        AbstractPypefitterVisitor.global_symbol_table.print()
 
     def visitStage_body(self, ctx: PypefitterParser.Stage_bodyContext):
-        pypefitter.logger.debug(f"Pypefitter visitor started")
+        pypefitter.logger.debug(f"Stage visitor started")
         stage_name = ctx.name.text
         stage_symbol: SymbolTable.Symbol = \
             AbstractPypefitterVisitor.symbol_table_stack[-1].add_symbol(stage_name, SymbolType.STAGE)
-        print(stage_symbol)
         AbstractPypefitterVisitor.symbol_table_stack.append(stage_symbol.symbol_table)
+
+        # look for event declarations
+        for event in ctx.event_decl():
+            self.visitEvent_decl(event)
+
+        # parse the stages and pop the stack
+        for stage in ctx.stage():
+            self.visitStage_body(stage.stage_body())
+
         AbstractPypefitterVisitor.symbol_table_stack.pop()
+        pypefitter.logger.debug(f"Stage visitor ended")
+
+    def visitEvent_decl(self, ctx:PypefitterParser.Event_declContext):
+        pypefitter.logger.debug(f"Event visitor started")
+        event_condition = ctx.event_condition_decl().event_condition().name.text \
+            if ctx.event_condition_decl() is not None else None
+        event_action = ctx.event_action().action.text
+        event_attributes = {'event_condition': event_condition, 'event_action': event_action}
+
+        # we could have multiple clauses for a given event so we need to munge
+        # the name to include both the event name and the condition, which will
+        # keep things unique.
+        event_name = f"{ctx.event_name().name.text}_{event_condition}".lower()
+        event_symbol: SymbolTable.Symbol = \
+            AbstractPypefitterVisitor.symbol_table_stack[-1].add_symbol(event_name, SymbolType.EVENT, **event_attributes)
+        pypefitter.logger.debug(f"Event visitor ended")

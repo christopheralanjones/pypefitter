@@ -1,8 +1,8 @@
 """
 Contains API-related elements related to emitters.
 """
-from pypefitter.api import PypefitterPlugin
 from pypefitter.api.builder import PypefitterPluginCLIRequestBuilder
+from pypefitter.api.plugin import PypefitterPlugin
 
 
 class PypefitterEmitterCLIRequestBuilder(PypefitterPluginCLIRequestBuilder):

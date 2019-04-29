@@ -4,10 +4,10 @@ Defines the Pypefitter command model.
 from abc import abstractmethod
 from pathlib import Path
 import pypefitter
-from pypefitter.api import PypefitterPlugin
 from pypefitter.api.builder import PypefitterPluginCLIRequestBuilder
 from pypefitter.api.emitter import Emitter
 from pypefitter.api.parser import PypefitterParserHelper
+from pypefitter.api.plugin import PypefitterPlugin
 from pypefitter.api.provider import Provider
 from pypefitter.api.request import PypefitterRequest, PypefitterResponse
 from typing import List

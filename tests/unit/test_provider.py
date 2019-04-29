@@ -1,6 +1,6 @@
 from pathlib import Path
 from pypefitter import PypefitterError
-from pypefitter.api.manager import PypefitterPluginNotFoundError, EntryPointManager
+from pypefitter.api.plugin import PypefitterPluginNotFoundError, PluginManager
 from pypefitter.api.parser import PypefitterParserHelper
 from pypefitter.api.provider import Provider
 import pytest
@@ -23,9 +23,9 @@ def test_provider_helper_does_not_read_missing_file(pf_fake_file):
 # PROVIDER
 #
 def test_manager_knows_discovered_providers(pf_provider: str):
-    assert EntryPointManager.get_plugin(Provider.get_entry_point(), pf_provider) is not None
+    assert PluginManager.get_plugin(Provider.get_entry_point(), pf_provider) is not None
 
 
 def test_manager_fails_on_unknown_provider():
     with pytest.raises(PypefitterPluginNotFoundError):
-        assert EntryPointManager.get_plugin(Provider.get_entry_point(), 'does-not-exist')
+        assert PluginManager.get_plugin(Provider.get_entry_point(), 'does-not-exist')

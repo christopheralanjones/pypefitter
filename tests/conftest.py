@@ -1,7 +1,7 @@
 import os
 from pathlib import Path
 import pypefitter
-from pypefitter.api.manager import EntryPointManager
+from pypefitter.api.plugin import PluginManager
 from pypefitter.api.provider import Provider
 import pytest
 
@@ -27,7 +27,7 @@ def pf_fake_file():
 
 @pytest.fixture(scope="module", autouse=True)
 def providers_fixture():
-    EntryPointManager.load_plugins(Provider.get_entry_point())
+    PluginManager.load_plugins(Provider.get_entry_point())
 
 
 @pytest.fixture(

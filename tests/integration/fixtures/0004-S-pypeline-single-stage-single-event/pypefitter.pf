@@ -1,0 +1,4 @@
+pypefitter pypeline {
+  stage s1 {
+  }
+}

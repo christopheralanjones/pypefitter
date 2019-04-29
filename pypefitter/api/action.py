@@ -4,6 +4,7 @@ Defines the Pypefitter command model.
 from abc import abstractmethod
 from pathlib import Path
 import pypefitter
+from pypefitter.api import PypefitterError
 from pypefitter.api.builder import PypefitterPluginCLIRequestBuilder
 from pypefitter.api.emitter import Emitter
 from pypefitter.api.parser import PypefitterParserHelper
@@ -123,11 +124,11 @@ class InitAction(CommonAction):
         PypefitterResponse
             The result of the request being performed.
         """
-        pypefitter.logger.info(f"Writing default pypefitter declaration")
+        pypefitter.logger.info(f"Write of default pypefitter declaration started")
         with open(f"{request.file}", 'w') as pf_file:
             pf_file.write('pypefitter pypeline { }')
             pf_file.close()
-        pypefitter.logger.info(f"Default pypefitter declaration written")
+        pypefitter.logger.info(f"Write of default pypefitter declaration complete")
         return PypefitterResponse()
 
 
@@ -245,9 +246,15 @@ class ValidateAction(CommonAction):
         PypefitterResponse
             The result of the request being performed.
         """
-        pf_file_path = Path(request.file)
-        pf_content = PypefitterParserHelper.read_pypefitter_file(pf_file_path)
-        pypefitter.logger.info(f"Parse of pypefitter file started")
-        PypefitterParserHelper.parse_pypefitter_definition(pf_content)
-        pypefitter.logger.info(f"Parse of Pypefitter file complete")
-        return PypefitterResponse()
+        try:
+            pf_file_path = Path(request.file)
+            pypefitter.logger.info(f"Read of pypefitter file [{pf_file_path}] started")
+            pf_content = PypefitterParserHelper.read_pypefitter_file(pf_file_path)
+            pypefitter.logger.info(f"Read of pypefitter file [{pf_file_path}] complete")
+            pypefitter.logger.info(f"Parse of pypefitter file [{pf_file_path}] started")
+            PypefitterParserHelper.parse_pypefitter_definition(pf_content)
+            pypefitter.logger.info(f"Parse of pypefitter file [{pf_file_path}] complete")
+            response = PypefitterResponse()
+        except PypefitterError as pe:
+            response = PypefitterResponse(return_code=400, reason=pe.message)
+        return response

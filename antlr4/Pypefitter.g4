@@ -1,5 +1,6 @@
 grammar Pypefitter;
 
+
 /*
 ** PIPELINE
 */
@@ -7,12 +8,20 @@ pypefitter
     : PYPEFITTER stage_body
     ;
 
+event_decl
+    : event_type
+    ;
+
+event_type
+    : ON_ENTER | ON_EXIT
+    ;
+
 stage
     : STAGE stage_body
     ;
 
 stage_body
-    : name=Identifier LBRACE stage* RBRACE
+    : name=Identifier LBRACE event_decl* stage* RBRACE
     ;
 
 
@@ -20,6 +29,8 @@ stage_body
 /*
 ** KEYWORDS
 */
+ON_ENTER : 'on_enter';
+ON_EXIT : 'on_exit';
 PYPEFITTER : 'pypefitter';
 STAGE : 'stage';
 

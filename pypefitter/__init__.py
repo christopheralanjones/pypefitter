@@ -76,7 +76,6 @@ class PypefitterCLIRequestBuilder(PypefitterRequestBuilder):
                                   **{'emitter': parsed_args.emitter, 'verbosity': parsed_args.verbosity})
         except SystemExit:
             request: PypefitterRequest = None
-
         return request
 
 
@@ -114,7 +113,7 @@ def main(argv: List[str] = None) -> int:
     builder: PypefitterCLIRequestBuilder = PypefitterCLIRequestBuilder()
     request: PypefitterRequest = builder.build(args=argv)
     if request is None:
-        return 1
+        return 400
     logger.info('-' * 80)
     logger.info(f"Provider.......{request.provider}")
     logger.info(f"Emitter........{request.emitter}")
@@ -124,11 +123,8 @@ def main(argv: List[str] = None) -> int:
     set_logging_level(request)
 
     # invoke the specific provider method
-    try:
-        provider: Provider = Provider.get_provider(request.provider)
-        response: PypefitterResponse = provider.do_action(request)
-    except PypefitterError:
-        return 1
-    finally:
-        logger.info('-' * 80)
+    provider: Provider = Provider.get_provider(request.provider)
+    response: PypefitterResponse = provider.do_action(request)
+    logger.info('-' * 80)
+    logger.error(f"[{response.return_code}] {response.reason}")
     return 0 if response.return_code == 200 else response.return_code

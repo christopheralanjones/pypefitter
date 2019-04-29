@@ -114,13 +114,12 @@ class PluginManager(object):
             The name of the entry point for which we want to load the plugins.
         """
         pypefitter.logger.debug(f"Preparing plugin cache for entry point [{entry_point}]")
-        pypefitter.logger.info(f"Loading plugins for [{entry_point}] entry point")
+        pypefitter.logger.info(f"[{entry_point}]")
         for plugin in pkg_resources.iter_entry_points(entry_point):
             if entry_point not in cls.__plugin_cache:
                 cls.__plugin_cache[entry_point] = {}
             cls.__plugin_cache[entry_point][plugin.name] = (plugin.load())()
-            pypefitter.logger.info(f"Loaded [{plugin.name}] as [{cls.__plugin_cache[entry_point][plugin.name].__class__.__name__}]")
-        pypefitter.logger.info(f"Plugins from [{entry_point}] entry point loaded")
+            pypefitter.logger.info(f"    [{plugin.name}:{cls.__plugin_cache[entry_point][plugin.name].__class__.__name__}]")
 
     @classmethod
     def get_plugin(cls, entry_point: str, plugin_id: str) -> object:

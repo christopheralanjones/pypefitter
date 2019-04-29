@@ -56,5 +56,3 @@ class PypefitterVisitor(AbstractPypefitterVisitor):
         pypeline_name = ctx.stage_body().name.text
         AbstractPypefitterVisitor.symbol_table.add_symbol(pypeline_name, SymbolType.PYPELINE)
         pypefitter.logger.debug(f"Pypefitter visitor ended")
-
-

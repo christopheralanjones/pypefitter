@@ -1,4 +1,4 @@
-# Generated from C:/Users/cj123/Documents/Github/pypefitter/antlr4\Pypefitter.g4 by ANTLR 4.7.2
+# Generated from C:/Users/cjones/Documents/pypefitter/antlr4\Pypefitter.g4 by ANTLR 4.7.2
 # encoding: utf-8
 from antlr4 import *
 from io import StringIO
@@ -8,15 +8,19 @@ import sys
 
 def serializedATN():
     with StringIO() as buf:
-        buf.write("\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\20")
-        buf.write("\31\4\2\t\2\4\3\t\3\4\4\t\4\3\2\3\2\3\2\3\3\3\3\3\3\3")
-        buf.write("\4\3\4\3\4\7\4\22\n\4\f\4\16\4\25\13\4\3\4\3\4\3\4\2\2")
-        buf.write("\5\2\4\6\2\2\2\26\2\b\3\2\2\2\4\13\3\2\2\2\6\16\3\2\2")
-        buf.write("\2\b\t\7\3\2\2\t\n\5\6\4\2\n\3\3\2\2\2\13\f\7\4\2\2\f")
-        buf.write("\r\5\6\4\2\r\5\3\2\2\2\16\17\7\16\2\2\17\23\7\7\2\2\20")
-        buf.write("\22\5\4\3\2\21\20\3\2\2\2\22\25\3\2\2\2\23\21\3\2\2\2")
-        buf.write("\23\24\3\2\2\2\24\26\3\2\2\2\25\23\3\2\2\2\26\27\7\b\2")
-        buf.write("\2\27\7\3\2\2\2\3\23")
+        buf.write("\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\22")
+        buf.write("\'\4\2\t\2\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\3\2\3\2\3\2")
+        buf.write("\3\3\3\3\3\4\3\4\3\5\3\5\3\5\3\6\3\6\3\6\7\6\32\n\6\f")
+        buf.write("\6\16\6\35\13\6\3\6\7\6 \n\6\f\6\16\6#\13\6\3\6\3\6\3")
+        buf.write("\6\2\2\7\2\4\6\b\n\2\3\3\2\3\4\2#\2\f\3\2\2\2\4\17\3\2")
+        buf.write("\2\2\6\21\3\2\2\2\b\23\3\2\2\2\n\26\3\2\2\2\f\r\7\5\2")
+        buf.write("\2\r\16\5\n\6\2\16\3\3\2\2\2\17\20\5\6\4\2\20\5\3\2\2")
+        buf.write("\2\21\22\t\2\2\2\22\7\3\2\2\2\23\24\7\6\2\2\24\25\5\n")
+        buf.write("\6\2\25\t\3\2\2\2\26\27\7\20\2\2\27\33\7\t\2\2\30\32\5")
+        buf.write("\4\3\2\31\30\3\2\2\2\32\35\3\2\2\2\33\31\3\2\2\2\33\34")
+        buf.write("\3\2\2\2\34!\3\2\2\2\35\33\3\2\2\2\36 \5\b\5\2\37\36\3")
+        buf.write("\2\2\2 #\3\2\2\2!\37\3\2\2\2!\"\3\2\2\2\"$\3\2\2\2#!\3")
+        buf.write("\2\2\2$%\7\n\2\2%\13\3\2\2\2\4\33!")
         return buf.getvalue()
 
 
@@ -30,34 +34,40 @@ class PypefitterParser ( Parser ):
 
     sharedContextCache = PredictionContextCache()
 
-    literalNames = [ "<INVALID>", "'pypefitter'", "'stage'", "'('", "')'", 
-                     "'{'", "'}'", "'['", "']'", "';'", "','", "'.'" ]
+    literalNames = [ "<INVALID>", "'on_enter'", "'on_exit'", "'pypefitter'", 
+                     "'stage'", "'('", "')'", "'{'", "'}'", "'['", "']'", 
+                     "';'", "','", "'.'" ]
 
-    symbolicNames = [ "<INVALID>", "PYPEFITTER", "STAGE", "LPAREN", "RPAREN", 
-                      "LBRACE", "RBRACE", "LBRACK", "RBRACK", "SEMI", "COMMA", 
-                      "DOT", "Identifier", "WS", "COMMENT" ]
+    symbolicNames = [ "<INVALID>", "ON_ENTER", "ON_EXIT", "PYPEFITTER", 
+                      "STAGE", "LPAREN", "RPAREN", "LBRACE", "RBRACE", "LBRACK", 
+                      "RBRACK", "SEMI", "COMMA", "DOT", "Identifier", "WS", 
+                      "COMMENT" ]
 
     RULE_pypefitter = 0
-    RULE_stage = 1
-    RULE_stage_body = 2
+    RULE_event_decl = 1
+    RULE_event_type = 2
+    RULE_stage = 3
+    RULE_stage_body = 4
 
-    ruleNames =  [ "pypefitter", "stage", "stage_body" ]
+    ruleNames =  [ "pypefitter", "event_decl", "event_type", "stage", "stage_body" ]
 
     EOF = Token.EOF
-    PYPEFITTER=1
-    STAGE=2
-    LPAREN=3
-    RPAREN=4
-    LBRACE=5
-    RBRACE=6
-    LBRACK=7
-    RBRACK=8
-    SEMI=9
-    COMMA=10
-    DOT=11
-    Identifier=12
-    WS=13
-    COMMENT=14
+    ON_ENTER=1
+    ON_EXIT=2
+    PYPEFITTER=3
+    STAGE=4
+    LPAREN=5
+    RPAREN=6
+    LBRACE=7
+    RBRACE=8
+    LBRACK=9
+    RBRACK=10
+    SEMI=11
+    COMMA=12
+    DOT=13
+    Identifier=14
+    WS=15
+    COMMENT=16
 
     def __init__(self, input:TokenStream, output:TextIO = sys.stdout):
         super().__init__(input, output)
@@ -84,11 +94,13 @@ class PypefitterParser ( Parser ):
         def getRuleIndex(self):
             return PypefitterParser.RULE_pypefitter
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitPypefitter" ):
-                return visitor.visitPypefitter(self)
-            else:
-                return visitor.visitChildren(self)
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterPypefitter" ):
+                listener.enterPypefitter(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitPypefitter" ):
+                listener.exitPypefitter(self)
 
 
 
@@ -99,10 +111,100 @@ class PypefitterParser ( Parser ):
         self.enterRule(localctx, 0, self.RULE_pypefitter)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 6
+            self.state = 10
             self.match(PypefitterParser.PYPEFITTER)
-            self.state = 7
+            self.state = 11
             self.stage_body()
+        except RecognitionException as re:
+            localctx.exception = re
+            self._errHandler.reportError(self, re)
+            self._errHandler.recover(self, re)
+        finally:
+            self.exitRule()
+        return localctx
+
+
+    class Event_declContext(ParserRuleContext):
+
+        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
+            super().__init__(parent, invokingState)
+            self.parser = parser
+
+        def event_type(self):
+            return self.getTypedRuleContext(PypefitterParser.Event_typeContext,0)
+
+
+        def getRuleIndex(self):
+            return PypefitterParser.RULE_event_decl
+
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterEvent_decl" ):
+                listener.enterEvent_decl(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitEvent_decl" ):
+                listener.exitEvent_decl(self)
+
+
+
+
+    def event_decl(self):
+
+        localctx = PypefitterParser.Event_declContext(self, self._ctx, self.state)
+        self.enterRule(localctx, 2, self.RULE_event_decl)
+        try:
+            self.enterOuterAlt(localctx, 1)
+            self.state = 13
+            self.event_type()
+        except RecognitionException as re:
+            localctx.exception = re
+            self._errHandler.reportError(self, re)
+            self._errHandler.recover(self, re)
+        finally:
+            self.exitRule()
+        return localctx
+
+
+    class Event_typeContext(ParserRuleContext):
+
+        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
+            super().__init__(parent, invokingState)
+            self.parser = parser
+
+        def ON_ENTER(self):
+            return self.getToken(PypefitterParser.ON_ENTER, 0)
+
+        def ON_EXIT(self):
+            return self.getToken(PypefitterParser.ON_EXIT, 0)
+
+        def getRuleIndex(self):
+            return PypefitterParser.RULE_event_type
+
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterEvent_type" ):
+                listener.enterEvent_type(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitEvent_type" ):
+                listener.exitEvent_type(self)
+
+
+
+
+    def event_type(self):
+
+        localctx = PypefitterParser.Event_typeContext(self, self._ctx, self.state)
+        self.enterRule(localctx, 4, self.RULE_event_type)
+        self._la = 0 # Token type
+        try:
+            self.enterOuterAlt(localctx, 1)
+            self.state = 15
+            _la = self._input.LA(1)
+            if not(_la==PypefitterParser.ON_ENTER or _la==PypefitterParser.ON_EXIT):
+                self._errHandler.recoverInline(self)
+            else:
+                self._errHandler.reportMatch(self)
+                self.consume()
         except RecognitionException as re:
             localctx.exception = re
             self._errHandler.reportError(self, re)
@@ -128,11 +230,13 @@ class PypefitterParser ( Parser ):
         def getRuleIndex(self):
             return PypefitterParser.RULE_stage
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitStage" ):
-                return visitor.visitStage(self)
-            else:
-                return visitor.visitChildren(self)
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterStage" ):
+                listener.enterStage(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitStage" ):
+                listener.exitStage(self)
 
 
 
@@ -140,12 +244,12 @@ class PypefitterParser ( Parser ):
     def stage(self):
 
         localctx = PypefitterParser.StageContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 2, self.RULE_stage)
+        self.enterRule(localctx, 6, self.RULE_stage)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 9
+            self.state = 17
             self.match(PypefitterParser.STAGE)
-            self.state = 10
+            self.state = 18
             self.stage_body()
         except RecognitionException as re:
             localctx.exception = re
@@ -172,6 +276,13 @@ class PypefitterParser ( Parser ):
         def Identifier(self):
             return self.getToken(PypefitterParser.Identifier, 0)
 
+        def event_decl(self, i:int=None):
+            if i is None:
+                return self.getTypedRuleContexts(PypefitterParser.Event_declContext)
+            else:
+                return self.getTypedRuleContext(PypefitterParser.Event_declContext,i)
+
+
         def stage(self, i:int=None):
             if i is None:
                 return self.getTypedRuleContexts(PypefitterParser.StageContext)
@@ -182,11 +293,13 @@ class PypefitterParser ( Parser ):
         def getRuleIndex(self):
             return PypefitterParser.RULE_stage_body
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitStage_body" ):
-                return visitor.visitStage_body(self)
-            else:
-                return visitor.visitChildren(self)
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterStage_body" ):
+                listener.enterStage_body(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitStage_body" ):
+                listener.exitStage_body(self)
 
 
 
@@ -194,25 +307,35 @@ class PypefitterParser ( Parser ):
     def stage_body(self):
 
         localctx = PypefitterParser.Stage_bodyContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 4, self.RULE_stage_body)
+        self.enterRule(localctx, 8, self.RULE_stage_body)
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 12
+            self.state = 20
             localctx.name = self.match(PypefitterParser.Identifier)
-            self.state = 13
+            self.state = 21
             self.match(PypefitterParser.LBRACE)
-            self.state = 17
+            self.state = 25
             self._errHandler.sync(self)
             _la = self._input.LA(1)
-            while _la==PypefitterParser.STAGE:
-                self.state = 14
-                self.stage()
-                self.state = 19
+            while _la==PypefitterParser.ON_ENTER or _la==PypefitterParser.ON_EXIT:
+                self.state = 22
+                self.event_decl()
+                self.state = 27
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
 
-            self.state = 20
+            self.state = 31
+            self._errHandler.sync(self)
+            _la = self._input.LA(1)
+            while _la==PypefitterParser.STAGE:
+                self.state = 28
+                self.stage()
+                self.state = 33
+                self._errHandler.sync(self)
+                _la = self._input.LA(1)
+
+            self.state = 34
             self.match(PypefitterParser.RBRACE)
         except RecognitionException as re:
             localctx.exception = re

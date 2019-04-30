@@ -17,7 +17,7 @@ event_action
     ;
 
 event_condition_decl
-    : LBRACK  event_condition RBRACK
+    : LBRACK event_condition RBRACK
     ;
 
 event_condition

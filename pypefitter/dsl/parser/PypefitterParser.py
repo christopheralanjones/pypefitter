@@ -1,4 +1,4 @@
-# Generated from C:/Users/cj123/Documents/Github/pypefitter/antlr4\Pypefitter.g4 by ANTLR 4.7.2
+# Generated from C:/Users/cjones/Documents/pypefitter/antlr4\Pypefitter.g4 by ANTLR 4.7.2
 # encoding: utf-8
 from antlr4 import *
 from io import StringIO
@@ -109,11 +109,13 @@ class PypefitterParser ( Parser ):
         def getRuleIndex(self):
             return PypefitterParser.RULE_pypefitter
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitPypefitter" ):
-                return visitor.visitPypefitter(self)
-            else:
-                return visitor.visitChildren(self)
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterPypefitter" ):
+                listener.enterPypefitter(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitPypefitter" ):
+                listener.exitPypefitter(self)
 
 
 
@@ -158,11 +160,13 @@ class PypefitterParser ( Parser ):
         def getRuleIndex(self):
             return PypefitterParser.RULE_event_decl
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitEvent_decl" ):
-                return visitor.visitEvent_decl(self)
-            else:
-                return visitor.visitChildren(self)
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterEvent_decl" ):
+                listener.enterEvent_decl(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitEvent_decl" ):
+                listener.exitEvent_decl(self)
 
 
 
@@ -211,11 +215,13 @@ class PypefitterParser ( Parser ):
         def getRuleIndex(self):
             return PypefitterParser.RULE_event_action
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitEvent_action" ):
-                return visitor.visitEvent_action(self)
-            else:
-                return visitor.visitChildren(self)
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterEvent_action" ):
+                listener.enterEvent_action(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitEvent_action" ):
+                listener.exitEvent_action(self)
 
 
 
@@ -258,11 +264,13 @@ class PypefitterParser ( Parser ):
         def getRuleIndex(self):
             return PypefitterParser.RULE_event_condition_decl
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitEvent_condition_decl" ):
-                return visitor.visitEvent_condition_decl(self)
-            else:
-                return visitor.visitChildren(self)
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterEvent_condition_decl" ):
+                listener.enterEvent_condition_decl(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitEvent_condition_decl" ):
+                listener.exitEvent_condition_decl(self)
 
 
 
@@ -304,11 +312,13 @@ class PypefitterParser ( Parser ):
         def getRuleIndex(self):
             return PypefitterParser.RULE_event_condition
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitEvent_condition" ):
-                return visitor.visitEvent_condition(self)
-            else:
-                return visitor.visitChildren(self)
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterEvent_condition" ):
+                listener.enterEvent_condition(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitEvent_condition" ):
+                listener.exitEvent_condition(self)
 
 
 
@@ -359,11 +369,13 @@ class PypefitterParser ( Parser ):
         def getRuleIndex(self):
             return PypefitterParser.RULE_event_name
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitEvent_name" ):
-                return visitor.visitEvent_name(self)
-            else:
-                return visitor.visitChildren(self)
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterEvent_name" ):
+                listener.enterEvent_name(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitEvent_name" ):
+                listener.exitEvent_name(self)
 
 
 
@@ -414,11 +426,13 @@ class PypefitterParser ( Parser ):
         def getRuleIndex(self):
             return PypefitterParser.RULE_stage
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitStage" ):
-                return visitor.visitStage(self)
-            else:
-                return visitor.visitChildren(self)
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterStage" ):
+                listener.enterStage(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitStage" ):
+                listener.exitStage(self)
 
 
 
@@ -475,11 +489,13 @@ class PypefitterParser ( Parser ):
         def getRuleIndex(self):
             return PypefitterParser.RULE_stage_body
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitStage_body" ):
-                return visitor.visitStage_body(self)
-            else:
-                return visitor.visitChildren(self)
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterStage_body" ):
+                listener.enterStage_body(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitStage_body" ):
+                listener.exitStage_body(self)
 
 
 

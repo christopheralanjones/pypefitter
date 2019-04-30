@@ -64,7 +64,7 @@ class SymbolTable(object):
         A symbol is an entry in the symbol table. Each symbol has its own
         SymbolTable, which is used to manage the symbols within its scope.
         """
-        def __init__(self, name: str, symbol_type: SymbolType, **kwargs):
+        def __init__(self, name: str, symbol_type: SymbolType, symbol_table = None, **kwargs):
             """
             Initializes the Symbol.
 
@@ -74,6 +74,8 @@ class SymbolTable(object):
                 The name of the new Symbol. This value is required.
             symbol_type : SymbolType
                 The type of the Symbol. This value is required.
+            symbol_table : SymbolTable
+                The symbol table to be associated with the Symbol.
 
             Raises
             ------
@@ -86,7 +88,7 @@ class SymbolTable(object):
                 raise ValueError('Parameter ''symbol_type'' is required')
             self.name = name
             self.symbol_type = symbol_type
-            self.symbol_table = SymbolTable()
+            self.symbol_table = symbol_table
             self.attributes = kwargs
 
     def __init__(self, parent=None):
@@ -118,7 +120,8 @@ class SymbolTable(object):
         """
         if self.find_symbol(name, symbol_type):
             raise DuplicateSymbolError(name, symbol_type, self)
-        new_symbol: SymbolTable.Symbol = SymbolTable.Symbol(name, symbol_type, **kwargs)
+        new_symbol_table: SymbolTable = SymbolTable(self)
+        new_symbol: SymbolTable.Symbol = SymbolTable.Symbol(name, symbol_type, new_symbol_table, **kwargs)
         self.symbols.append(new_symbol)
         return new_symbol
 
@@ -152,3 +155,17 @@ class SymbolTable(object):
             leading_spaces: str = '' if indent == 0 else ' ' * 2 * indent
             pypefitter.logger.debug(f"{leading_spaces}{symbol.name} [{symbol.symbol_type}] {symbol.attributes}")
             symbol.symbol_table.print(indent+1)
+
+    def validate(self) -> List[str]:
+        """
+        Validates the structure and content of the SymbolTable. In particular we
+        look for things like undefined forward references or other such things
+        that might indicate that the while the parse of the Pypefitter file was
+        fine, the semantics aren't quite right.
+
+        Returns
+        -------
+        List[str]
+            A list of messages -- one for each problem found.
+        """
+        pass

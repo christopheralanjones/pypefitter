@@ -35,6 +35,15 @@ class PypefitterListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by PypefitterParser#event_condition_decl.
+    def enterEvent_condition_decl(self, ctx:PypefitterParser.Event_condition_declContext):
+        pass
+
+    # Exit a parse tree produced by PypefitterParser#event_condition_decl.
+    def exitEvent_condition_decl(self, ctx:PypefitterParser.Event_condition_declContext):
+        pass
+
+
     # Enter a parse tree produced by PypefitterParser#event_condition.
     def enterEvent_condition(self, ctx:PypefitterParser.Event_conditionContext):
         pass
@@ -44,12 +53,12 @@ class PypefitterListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by PypefitterParser#event_type.
-    def enterEvent_type(self, ctx:PypefitterParser.Event_typeContext):
+    # Enter a parse tree produced by PypefitterParser#event_name.
+    def enterEvent_name(self, ctx:PypefitterParser.Event_nameContext):
         pass
 
-    # Exit a parse tree produced by PypefitterParser#event_type.
-    def exitEvent_type(self, ctx:PypefitterParser.Event_typeContext):
+    # Exit a parse tree produced by PypefitterParser#event_name.
+    def exitEvent_name(self, ctx:PypefitterParser.Event_nameContext):
         pass
 
 

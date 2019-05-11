@@ -1,1 +1,4 @@
-Hello, Jenkinsfile!
+{% set indent = 0 %}
+pipeline {
+  {% include 'stages' %}
+}

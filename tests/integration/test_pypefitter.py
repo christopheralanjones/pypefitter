@@ -34,8 +34,8 @@ def test_pypefitter(pf_provider: str, pf_command: str, pf_test_dir: str) -> None
         (['-v'],                    0),
         (['-f'],                    400),
         (['--file'],                400),
-        (['-f', 'test'],            400),
-        (['--file', 'test'],        400),
+        (['-f', 'test'],            404),
+        (['--file', 'test'],        404),
     ]
 )
 def test_pypefitter_with_bad_arguments(pf_real_file: Path, cli_params: List[str], expected: bool) -> None:

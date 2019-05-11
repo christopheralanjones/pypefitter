@@ -106,7 +106,7 @@ class Provider(PypefitterPlugin):
         str
             The name of the entry point associated with the plugin.
         """
-        return 'pypefitter.providers'
+        return f"{super().get_entry_point()}.providers"
 
     @classmethod
     def get_emitters(cls) -> List[Emitter]:

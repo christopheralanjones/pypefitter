@@ -60,14 +60,13 @@ class PypefitterParserHelper:
 
         Raises
         ------
-        PypefitterError
+        FileNotFoundError
             If the file at path `pf_file_path` doesn't exist.
         """
         pypefitter.logger.info(f"Using Pypefitter file [{pf_file_path}]")
         if not pf_file_path.is_file():
             pypefitter.logger.error(f"Pypefitter file [{pf_file_path}] does not exist")
-            raise PypefitterError(f"Pypefitter file [{pf_file_path}] does not exist") \
-                from FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), pf_file_path)
+            raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), pf_file_path)
 
         pypefitter.logger.info(f"Reading Pypefitter file")
         with pf_file_path.open('r') as pf_file:

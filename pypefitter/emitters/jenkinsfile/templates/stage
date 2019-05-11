@@ -1,0 +1,9 @@
+{% set indent = indent + 1 %}
+{% filter indent(width=2, first=True) %}
+stage('{{ stage.name }}') {
+  {% for stage in stage.symbol_table.find_symbols_by_type(SymbolType.STAGE) %}
+  {% include 'stage' %}
+  {% endfor %}
+}
+{% endfilter %}
+{% set indent = indent - 1 %}

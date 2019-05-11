@@ -1,0 +1,10 @@
+{% set pypeline_symbol_table = global_symbol_table.find_symbols_by_type(SymbolType.PYPELINE)[0].symbol_table %}
+{% set indent = indent + 1 %}
+{% filter indent(width=2, first=True) %}
+stages {
+  {% for stage in pypeline_symbol_table.find_symbols_by_type(SymbolType.STAGE) %}
+  {% include 'stage' %}
+  {% endfor %}
+}
+{% endfilter %}
+{% set indent = indent - 1 %}

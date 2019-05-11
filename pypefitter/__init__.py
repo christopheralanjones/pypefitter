@@ -123,9 +123,9 @@ def main(argv: List[str] = None) -> int:
     logger.info(f"Action.........{request.action}")
     logger.info(f"Definition.....{request.file}")
     logger.info('-' * 80)
-    set_logging_level(request)
 
     # invoke the specific provider method
+    set_logging_level(request)
     provider: Provider = Provider.get_provider(request.provider)
     response: PypefitterResponse = provider.do_action(request)
     logger.info('-' * 80)

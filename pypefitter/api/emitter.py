@@ -35,7 +35,7 @@ class Emitter(PypefitterPlugin):
         str
             The name of the entry point associated with the plugin.
         """
-        return 'pypefitter.emitters'
+        return f"{super().get_entry_point()}.emitters"
 
     @classmethod
     def get_output_file(cls, request: PypefitterRequest, file_name: str) -> str:

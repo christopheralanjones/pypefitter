@@ -86,7 +86,7 @@ class CommonAction(Action):
         str
             The name of the entry point associated with the plugin.
         """
-        return 'pyperfitter.providers.actions'
+        return f"{Provider.get_entry_point()}.actions"
 
 
 class InitAction(CommonAction):
@@ -261,6 +261,8 @@ class ValidateAction(CommonAction):
             PypefitterParserHelper.parse_pypefitter_definition(pf_content)
             pypefitter.logger.info(f"Parse of pypefitter file [{pf_file_path}] complete")
             response = PypefitterResponse()
+        except FileNotFoundError as fnfe:
+            response = PypefitterResponse(return_code=404, reason=fnfe.filename)
         except PypefitterError as pe:
             response = PypefitterResponse(return_code=400, reason=pe.message)
         return response

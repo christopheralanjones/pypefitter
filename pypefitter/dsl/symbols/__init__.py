@@ -63,7 +63,7 @@ class SymbolTable(object):
         A symbol is an entry in the symbol table. Each symbol has its own
         SymbolTable, which is used to manage the symbols within its scope.
         """
-        def __init__(self, name: str, symbol_type: SymbolType, symbol_table = None, **kwargs):
+        def __init__(self, name: str, symbol_type: SymbolType, symbol_table=None, **kwargs):
             """
             Initializes the Symbol.
 
@@ -146,7 +146,26 @@ class SymbolTable(object):
             list(filter(lambda symbol: symbol.name == name and symbol.symbol_type == symbol_type, self.symbols))
         return matching_symbols[0] if len(matching_symbols) != 0 else None
 
-    def print(self, indent: int = 0) -> None: # pragma: no cover
+    def find_symbols_by_type(self, symbol_type: SymbolType) -> List[Symbol]:
+        """
+        Locates all of the symbols in the given table with the given type.
+        This is a non-recursive search.
+
+        Parameters
+        symbol_type : SymbolType
+            The type of Symbol we're looking for.
+
+        Returns
+        -------
+        List[Symbol]
+            A list of symbols with the given type or an empty list of no such
+            symbols exist in the table.
+        """
+        matching_symbols: List[SymbolTable.Symbol] = \
+            list(filter(lambda symbol: symbol.symbol_type == symbol_type, self.symbols))
+        return matching_symbols
+
+    def print(self, indent: int = 0) -> None:  # pragma: no cover
         """
         Prints the symbol table in human-readable format.
         """

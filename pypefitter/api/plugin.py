@@ -69,7 +69,7 @@ class PypefitterPlugin(ABC):
         str
             The name of the entry point associated with the plugin.
         """
-        pass
+        return 'pypefitter'
 
     @classmethod
     @abstractmethod
@@ -122,7 +122,7 @@ class PluginManager(object):
             pypefitter.logger.info(f"    {plugin.name} [{cls.__plugin_cache[entry_point][plugin.name].__class__.__name__}]")
 
     @classmethod
-    def get_plugin(cls, entry_point: str, plugin_id: str) -> object:
+    def get_plugin(cls, entry_point: str, plugin_id: str) -> PypefitterPlugin:
         """
         Returns the plugin from the specified entry_point with the specified
         plugin id.
@@ -137,7 +137,7 @@ class PluginManager(object):
 
         Returns
         -------
-        object
+        PypefitterPlugin
             The plugin associated with the plugin_id within the specified
             entry point or None if there are no such plugins.
 

@@ -4,6 +4,8 @@ The Jenkinsfile emitter.
 from jinja2 import Environment, PackageLoader
 from pypefitter.emitters import JenkinsEmitter
 from pypefitter.api.request import PypefitterRequest
+from pypefitter.dsl.symbols import SymbolType
+from pypefitter.dsl.visitor import AbstractPypefitterVisitor
 
 
 class JenkinsfileEmitter(JenkinsEmitter):
@@ -37,9 +39,15 @@ class JenkinsfileEmitter(JenkinsEmitter):
         """
         env = Environment(
             loader=PackageLoader(f"{cls.get_entry_point()}.{request.emitter}", 'templates'),
+            extensions=['jinja2.ext.loopcontrols'],
+            trim_blocks=True,
+            lstrip_blocks=True,
+            keep_trailing_newline=True
         )
         template = env.get_template('main')
-        file_content: str = template.render()
+        file_content: str = template.render(
+            {'global_symbol_table': AbstractPypefitterVisitor.global_symbol_table, 'SymbolType': SymbolType}
+        )
 
         output_file: str = cls.get_output_file(request, 'Jenkinsfile')
         with open(output_file, 'w') as pf_file:

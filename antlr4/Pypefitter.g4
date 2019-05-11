@@ -1,6 +1,5 @@
 grammar Pypefitter;
 
-
 /*
 ** PIPELINE
 */
@@ -8,47 +7,23 @@ pypefitter
     : PYPEFITTER name=Identifier LBRACE stage* RBRACE
     ;
 
-event_decl
-    : event_name event_condition_decl? event_action
-    ;
-
-event_action
-    : FSLASH action=Identifier
-    ;
-
-event_condition_decl
-    : LBRACK event_condition RBRACK
-    ;
-
-event_condition
-    : name=FAILURE
-    | name=SUCCESS
-    ;
-
-event_name
-    : name=ON_ENTER
-    | name=ON_EXIT
-    ;
-
+/*
+** STAGES
+*/
 stage
     : STAGE stage_body
     ;
 
 stage_body
-    : name=Identifier LBRACE event_decl* stage* RBRACE
+    : name=Identifier LBRACE stage* RBRACE
     ;
-
 
 
 /*
 ** KEYWORDS
 */
-FAILURE : 'failure';
-ON_ENTER : 'on_enter';
-ON_EXIT : 'on_exit';
 PYPEFITTER : 'pypefitter';
 STAGE : 'stage';
-SUCCESS : 'success';
 
 
 /*

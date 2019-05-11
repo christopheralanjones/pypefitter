@@ -12,7 +12,6 @@ from typing import List
 class SymbolType(Enum):
     PYPELINE = 1,
     STAGE = 2
-    EVENT = 3
 
 
 class DuplicateSymbolError(PypefitterError):

@@ -72,12 +72,6 @@ class PypefitterVisitor(AbstractPypefitterVisitor):
             AbstractPypefitterVisitor.global_symbol_table.add_symbol(pypeline_name, SymbolType.PYPELINE)
         AbstractPypefitterVisitor.symbol_table_stack.append(pypeline_symbol.symbol_table)
 
-        # there will always be two default stages: start and end. the start
-        # stage is where processing always begins and the end stage is where
-        # it always ends. these are provided as a convenience.
-        AbstractPypefitterVisitor.symbol_table_stack[-1].add_symbol('start', SymbolType.STAGE)
-        AbstractPypefitterVisitor.symbol_table_stack[-1].add_symbol('end', SymbolType.STAGE)
-
         # parse the stages and pop the stack
         for stage in ctx.stage():
             self.visitStage_body(stage.stage_body())
@@ -93,28 +87,9 @@ class PypefitterVisitor(AbstractPypefitterVisitor):
             AbstractPypefitterVisitor.symbol_table_stack[-1].add_symbol(stage_name, SymbolType.STAGE)
         AbstractPypefitterVisitor.symbol_table_stack.append(stage_symbol.symbol_table)
 
-        # look for event declarations
-        for event in ctx.event_decl():
-            self.visitEvent_decl(event)
-
         # parse the stages and pop the stack
         for stage in ctx.stage():
             self.visitStage_body(stage.stage_body())
 
         AbstractPypefitterVisitor.symbol_table_stack.pop()
         pypefitter.logger.debug(f"Stage visitor ended")
-
-    def visitEvent_decl(self, ctx:PypefitterParser.Event_declContext):
-        pypefitter.logger.debug(f"Event visitor started")
-        event_condition = ctx.event_condition_decl().event_condition().name.text \
-            if ctx.event_condition_decl() is not None else None
-        event_action = ctx.event_action().action.text
-        event_attributes = {'event_condition': event_condition, 'event_action': event_action}
-
-        # we could have multiple clauses for a given event so we need to munge
-        # the name to include both the event name and the condition, which will
-        # keep things unique.
-        event_name = f"{ctx.event_name().name.text}_{event_condition}".lower()
-        event_symbol: SymbolTable.Symbol = \
-            AbstractPypefitterVisitor.symbol_table_stack[-1].add_symbol(event_name, SymbolType.EVENT, **event_attributes)
-        pypefitter.logger.debug(f"Event visitor ended")

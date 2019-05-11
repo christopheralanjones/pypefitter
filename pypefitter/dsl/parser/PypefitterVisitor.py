@@ -14,31 +14,6 @@ class PypefitterVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by PypefitterParser#event_decl.
-    def visitEvent_decl(self, ctx:PypefitterParser.Event_declContext):
-        return self.visitChildren(ctx)
-
-
-    # Visit a parse tree produced by PypefitterParser#event_action.
-    def visitEvent_action(self, ctx:PypefitterParser.Event_actionContext):
-        return self.visitChildren(ctx)
-
-
-    # Visit a parse tree produced by PypefitterParser#event_condition_decl.
-    def visitEvent_condition_decl(self, ctx:PypefitterParser.Event_condition_declContext):
-        return self.visitChildren(ctx)
-
-
-    # Visit a parse tree produced by PypefitterParser#event_condition.
-    def visitEvent_condition(self, ctx:PypefitterParser.Event_conditionContext):
-        return self.visitChildren(ctx)
-
-
-    # Visit a parse tree produced by PypefitterParser#event_name.
-    def visitEvent_name(self, ctx:PypefitterParser.Event_nameContext):
-        return self.visitChildren(ctx)
-
-
     # Visit a parse tree produced by PypefitterParser#stage.
     def visitStage(self, ctx:PypefitterParser.StageContext):
         return self.visitChildren(ctx)

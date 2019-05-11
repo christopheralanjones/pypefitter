@@ -7,7 +7,7 @@ class PypefitterRequest(object):
     """
     A request provided to the Pypefitter API.
     """
-    def __init__(self, action: str, provider: str, file: str, **kwargs):
+    def __init__(self, action: str, provider: str, file: str, out: str, **kwargs):
         """
         Initializes the PypefitterRequest. The kwargs can contain arbitrary
         data, but it must be understood by the receiver of the request.
@@ -20,9 +20,12 @@ class PypefitterRequest(object):
             The name of the provider to be used.
         file : str
             The full path to the file to be used.
+        out : str
+            The directory where any output will be placed.
         """
         self.action = action
         self.file = file
+        self.out = out
         self.provider = provider
         self.__dict__.update(kwargs)
 

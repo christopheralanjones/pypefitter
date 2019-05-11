@@ -123,6 +123,21 @@ class Provider(PypefitterPlugin):
         return emitters
 
     @classmethod
+    def get_emitter(cls, plugin_id: str) -> Emitter:
+        """
+        Gets the Emitter with the specified plugin_id that has been registered
+        for this Provider.
+
+        Returns
+        -------
+        Emitter
+            The Emitter with the specified plugin_id for this provider.
+        """
+        emitter: PypefitterPlugin = \
+            PluginManager.get_plugin(f"{cls.get_entry_point()}.{cls.get_plugin_id()}.emitters", plugin_id)
+        return emitter
+
+    @classmethod
     def get_providers(cls) -> List:
         """
         Gets the Providers that have been installed to Pypefitter's providers

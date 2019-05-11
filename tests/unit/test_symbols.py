@@ -36,7 +36,7 @@ def test_symbol_builders(name: str, symbol_type: SymbolType, expected: bool):
         assert symbol is not None
         assert symbol.name == name
         assert symbol.symbol_type == symbol_type
-        assert symbol.symbol_table is not None
+        assert symbol.symbol_table is None
     else:
         with pytest.raises(ValueError):
             assert SymbolTable.Symbol(name, symbol_type)

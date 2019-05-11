@@ -61,4 +61,6 @@ class PypefitterProviderCLIRequestBuilder(PypefitterPluginCLIRequestBuilder):
         # get the list of emitters for the provider and set the final defaults
         # on the arguments
         emitters: List = provider.get_emitters()
-        provider_parser.set_defaults(provider=provider.get_plugin_id(), action=action_names[0], emitter=emitters[0].get_plugin_id())
+        provider_parser.set_defaults(provider=provider.get_plugin_id(),
+                                     action=action_names[0],
+                                     emitter=emitters[0].get_plugin_id())

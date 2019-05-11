@@ -1,4 +1,4 @@
-# Generated from C:/Users/cjones/Documents/pypefitter/antlr4\Pypefitter.g4 by ANTLR 4.7.2
+# Generated from C:/Users/cj123/Documents/Github/pypefitter/antlr4\Pypefitter.g4 by ANTLR 4.7.2
 # encoding: utf-8
 from antlr4 import *
 from io import StringIO
@@ -9,25 +9,27 @@ import sys
 def serializedATN():
     with StringIO() as buf:
         buf.write("\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\26")
-        buf.write(">\4\2\t\2\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b")
-        buf.write("\t\b\4\t\t\t\3\2\3\2\3\2\3\3\3\3\5\3\30\n\3\3\3\3\3\3")
-        buf.write("\4\3\4\3\4\3\5\3\5\3\5\3\5\3\6\3\6\5\6%\n\6\3\7\3\7\5")
-        buf.write("\7)\n\7\3\b\3\b\3\b\3\t\3\t\3\t\7\t\61\n\t\f\t\16\t\64")
-        buf.write("\13\t\3\t\7\t\67\n\t\f\t\16\t:\13\t\3\t\3\t\3\t\2\2\n")
-        buf.write("\2\4\6\b\n\f\16\20\2\2\2:\2\22\3\2\2\2\4\25\3\2\2\2\6")
-        buf.write("\33\3\2\2\2\b\36\3\2\2\2\n$\3\2\2\2\f(\3\2\2\2\16*\3\2")
-        buf.write("\2\2\20-\3\2\2\2\22\23\7\6\2\2\23\24\5\20\t\2\24\3\3\2")
-        buf.write("\2\2\25\27\5\f\7\2\26\30\5\b\5\2\27\26\3\2\2\2\27\30\3")
-        buf.write("\2\2\2\30\31\3\2\2\2\31\32\5\6\4\2\32\5\3\2\2\2\33\34")
-        buf.write("\7\22\2\2\34\35\7\23\2\2\35\7\3\2\2\2\36\37\7\r\2\2\37")
-        buf.write(" \5\n\6\2 !\7\16\2\2!\t\3\2\2\2\"%\7\3\2\2#%\7\b\2\2$")
-        buf.write("\"\3\2\2\2$#\3\2\2\2%\13\3\2\2\2&)\7\4\2\2\')\7\5\2\2")
-        buf.write("(&\3\2\2\2(\'\3\2\2\2)\r\3\2\2\2*+\7\7\2\2+,\5\20\t\2")
-        buf.write(",\17\3\2\2\2-.\7\23\2\2.\62\7\13\2\2/\61\5\4\3\2\60/\3")
-        buf.write("\2\2\2\61\64\3\2\2\2\62\60\3\2\2\2\62\63\3\2\2\2\638\3")
-        buf.write("\2\2\2\64\62\3\2\2\2\65\67\5\16\b\2\66\65\3\2\2\2\67:")
-        buf.write("\3\2\2\28\66\3\2\2\289\3\2\2\29;\3\2\2\2:8\3\2\2\2;<\7")
-        buf.write("\f\2\2<\21\3\2\2\2\7\27$(\628")
+        buf.write("F\4\2\t\2\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b")
+        buf.write("\t\b\4\t\t\t\3\2\3\2\3\2\3\2\7\2\27\n\2\f\2\16\2\32\13")
+        buf.write("\2\3\2\3\2\3\3\3\3\5\3 \n\3\3\3\3\3\3\4\3\4\3\4\3\5\3")
+        buf.write("\5\3\5\3\5\3\6\3\6\5\6-\n\6\3\7\3\7\5\7\61\n\7\3\b\3\b")
+        buf.write("\3\b\3\t\3\t\3\t\7\t9\n\t\f\t\16\t<\13\t\3\t\7\t?\n\t")
+        buf.write("\f\t\16\tB\13\t\3\t\3\t\3\t\2\2\n\2\4\6\b\n\f\16\20\2")
+        buf.write("\2\2C\2\22\3\2\2\2\4\35\3\2\2\2\6#\3\2\2\2\b&\3\2\2\2")
+        buf.write("\n,\3\2\2\2\f\60\3\2\2\2\16\62\3\2\2\2\20\65\3\2\2\2\22")
+        buf.write("\23\7\6\2\2\23\24\7\23\2\2\24\30\7\13\2\2\25\27\5\16\b")
+        buf.write("\2\26\25\3\2\2\2\27\32\3\2\2\2\30\26\3\2\2\2\30\31\3\2")
+        buf.write("\2\2\31\33\3\2\2\2\32\30\3\2\2\2\33\34\7\f\2\2\34\3\3")
+        buf.write("\2\2\2\35\37\5\f\7\2\36 \5\b\5\2\37\36\3\2\2\2\37 \3\2")
+        buf.write("\2\2 !\3\2\2\2!\"\5\6\4\2\"\5\3\2\2\2#$\7\22\2\2$%\7\23")
+        buf.write("\2\2%\7\3\2\2\2&\'\7\r\2\2\'(\5\n\6\2()\7\16\2\2)\t\3")
+        buf.write("\2\2\2*-\7\3\2\2+-\7\b\2\2,*\3\2\2\2,+\3\2\2\2-\13\3\2")
+        buf.write("\2\2.\61\7\4\2\2/\61\7\5\2\2\60.\3\2\2\2\60/\3\2\2\2\61")
+        buf.write("\r\3\2\2\2\62\63\7\7\2\2\63\64\5\20\t\2\64\17\3\2\2\2")
+        buf.write("\65\66\7\23\2\2\66:\7\13\2\2\679\5\4\3\28\67\3\2\2\29")
+        buf.write("<\3\2\2\2:8\3\2\2\2:;\3\2\2\2;@\3\2\2\2<:\3\2\2\2=?\5")
+        buf.write("\16\b\2>=\3\2\2\2?B\3\2\2\2@>\3\2\2\2@A\3\2\2\2AC\3\2")
+        buf.write("\2\2B@\3\2\2\2CD\7\f\2\2D\21\3\2\2\2\b\30\37,\60:@")
         return buf.getvalue()
 
 
@@ -98,24 +100,35 @@ class PypefitterParser ( Parser ):
         def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
             super().__init__(parent, invokingState)
             self.parser = parser
+            self.name = None # Token
 
         def PYPEFITTER(self):
             return self.getToken(PypefitterParser.PYPEFITTER, 0)
 
-        def stage_body(self):
-            return self.getTypedRuleContext(PypefitterParser.Stage_bodyContext,0)
+        def LBRACE(self):
+            return self.getToken(PypefitterParser.LBRACE, 0)
+
+        def RBRACE(self):
+            return self.getToken(PypefitterParser.RBRACE, 0)
+
+        def Identifier(self):
+            return self.getToken(PypefitterParser.Identifier, 0)
+
+        def stage(self, i:int=None):
+            if i is None:
+                return self.getTypedRuleContexts(PypefitterParser.StageContext)
+            else:
+                return self.getTypedRuleContext(PypefitterParser.StageContext,i)
 
 
         def getRuleIndex(self):
             return PypefitterParser.RULE_pypefitter
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterPypefitter" ):
-                listener.enterPypefitter(self)
-
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitPypefitter" ):
-                listener.exitPypefitter(self)
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitPypefitter" ):
+                return visitor.visitPypefitter(self)
+            else:
+                return visitor.visitChildren(self)
 
 
 
@@ -124,12 +137,27 @@ class PypefitterParser ( Parser ):
 
         localctx = PypefitterParser.PypefitterContext(self, self._ctx, self.state)
         self.enterRule(localctx, 0, self.RULE_pypefitter)
+        self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 16
             self.match(PypefitterParser.PYPEFITTER)
             self.state = 17
-            self.stage_body()
+            localctx.name = self.match(PypefitterParser.Identifier)
+            self.state = 18
+            self.match(PypefitterParser.LBRACE)
+            self.state = 22
+            self._errHandler.sync(self)
+            _la = self._input.LA(1)
+            while _la==PypefitterParser.STAGE:
+                self.state = 19
+                self.stage()
+                self.state = 24
+                self._errHandler.sync(self)
+                _la = self._input.LA(1)
+
+            self.state = 25
+            self.match(PypefitterParser.RBRACE)
         except RecognitionException as re:
             localctx.exception = re
             self._errHandler.reportError(self, re)
@@ -160,13 +188,11 @@ class PypefitterParser ( Parser ):
         def getRuleIndex(self):
             return PypefitterParser.RULE_event_decl
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterEvent_decl" ):
-                listener.enterEvent_decl(self)
-
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitEvent_decl" ):
-                listener.exitEvent_decl(self)
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitEvent_decl" ):
+                return visitor.visitEvent_decl(self)
+            else:
+                return visitor.visitChildren(self)
 
 
 
@@ -178,17 +204,17 @@ class PypefitterParser ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 19
+            self.state = 27
             self.event_name()
-            self.state = 21
+            self.state = 29
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             if _la==PypefitterParser.LBRACK:
-                self.state = 20
+                self.state = 28
                 self.event_condition_decl()
 
 
-            self.state = 23
+            self.state = 31
             self.event_action()
         except RecognitionException as re:
             localctx.exception = re
@@ -215,13 +241,11 @@ class PypefitterParser ( Parser ):
         def getRuleIndex(self):
             return PypefitterParser.RULE_event_action
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterEvent_action" ):
-                listener.enterEvent_action(self)
-
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitEvent_action" ):
-                listener.exitEvent_action(self)
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitEvent_action" ):
+                return visitor.visitEvent_action(self)
+            else:
+                return visitor.visitChildren(self)
 
 
 
@@ -232,9 +256,9 @@ class PypefitterParser ( Parser ):
         self.enterRule(localctx, 4, self.RULE_event_action)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 25
+            self.state = 33
             self.match(PypefitterParser.FSLASH)
-            self.state = 26
+            self.state = 34
             localctx.action = self.match(PypefitterParser.Identifier)
         except RecognitionException as re:
             localctx.exception = re
@@ -264,13 +288,11 @@ class PypefitterParser ( Parser ):
         def getRuleIndex(self):
             return PypefitterParser.RULE_event_condition_decl
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterEvent_condition_decl" ):
-                listener.enterEvent_condition_decl(self)
-
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitEvent_condition_decl" ):
-                listener.exitEvent_condition_decl(self)
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitEvent_condition_decl" ):
+                return visitor.visitEvent_condition_decl(self)
+            else:
+                return visitor.visitChildren(self)
 
 
 
@@ -281,11 +303,11 @@ class PypefitterParser ( Parser ):
         self.enterRule(localctx, 6, self.RULE_event_condition_decl)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 28
+            self.state = 36
             self.match(PypefitterParser.LBRACK)
-            self.state = 29
+            self.state = 37
             self.event_condition()
-            self.state = 30
+            self.state = 38
             self.match(PypefitterParser.RBRACK)
         except RecognitionException as re:
             localctx.exception = re
@@ -312,13 +334,11 @@ class PypefitterParser ( Parser ):
         def getRuleIndex(self):
             return PypefitterParser.RULE_event_condition
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterEvent_condition" ):
-                listener.enterEvent_condition(self)
-
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitEvent_condition" ):
-                listener.exitEvent_condition(self)
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitEvent_condition" ):
+                return visitor.visitEvent_condition(self)
+            else:
+                return visitor.visitChildren(self)
 
 
 
@@ -328,17 +348,17 @@ class PypefitterParser ( Parser ):
         localctx = PypefitterParser.Event_conditionContext(self, self._ctx, self.state)
         self.enterRule(localctx, 8, self.RULE_event_condition)
         try:
-            self.state = 34
+            self.state = 42
             self._errHandler.sync(self)
             token = self._input.LA(1)
             if token in [PypefitterParser.FAILURE]:
                 self.enterOuterAlt(localctx, 1)
-                self.state = 32
+                self.state = 40
                 localctx.name = self.match(PypefitterParser.FAILURE)
                 pass
             elif token in [PypefitterParser.SUCCESS]:
                 self.enterOuterAlt(localctx, 2)
-                self.state = 33
+                self.state = 41
                 localctx.name = self.match(PypefitterParser.SUCCESS)
                 pass
             else:
@@ -369,13 +389,11 @@ class PypefitterParser ( Parser ):
         def getRuleIndex(self):
             return PypefitterParser.RULE_event_name
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterEvent_name" ):
-                listener.enterEvent_name(self)
-
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitEvent_name" ):
-                listener.exitEvent_name(self)
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitEvent_name" ):
+                return visitor.visitEvent_name(self)
+            else:
+                return visitor.visitChildren(self)
 
 
 
@@ -385,17 +403,17 @@ class PypefitterParser ( Parser ):
         localctx = PypefitterParser.Event_nameContext(self, self._ctx, self.state)
         self.enterRule(localctx, 10, self.RULE_event_name)
         try:
-            self.state = 38
+            self.state = 46
             self._errHandler.sync(self)
             token = self._input.LA(1)
             if token in [PypefitterParser.ON_ENTER]:
                 self.enterOuterAlt(localctx, 1)
-                self.state = 36
+                self.state = 44
                 localctx.name = self.match(PypefitterParser.ON_ENTER)
                 pass
             elif token in [PypefitterParser.ON_EXIT]:
                 self.enterOuterAlt(localctx, 2)
-                self.state = 37
+                self.state = 45
                 localctx.name = self.match(PypefitterParser.ON_EXIT)
                 pass
             else:
@@ -426,13 +444,11 @@ class PypefitterParser ( Parser ):
         def getRuleIndex(self):
             return PypefitterParser.RULE_stage
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterStage" ):
-                listener.enterStage(self)
-
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitStage" ):
-                listener.exitStage(self)
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitStage" ):
+                return visitor.visitStage(self)
+            else:
+                return visitor.visitChildren(self)
 
 
 
@@ -443,9 +459,9 @@ class PypefitterParser ( Parser ):
         self.enterRule(localctx, 12, self.RULE_stage)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 40
+            self.state = 48
             self.match(PypefitterParser.STAGE)
-            self.state = 41
+            self.state = 49
             self.stage_body()
         except RecognitionException as re:
             localctx.exception = re
@@ -489,13 +505,11 @@ class PypefitterParser ( Parser ):
         def getRuleIndex(self):
             return PypefitterParser.RULE_stage_body
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterStage_body" ):
-                listener.enterStage_body(self)
-
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitStage_body" ):
-                listener.exitStage_body(self)
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitStage_body" ):
+                return visitor.visitStage_body(self)
+            else:
+                return visitor.visitChildren(self)
 
 
 
@@ -507,31 +521,31 @@ class PypefitterParser ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 43
+            self.state = 51
             localctx.name = self.match(PypefitterParser.Identifier)
-            self.state = 44
+            self.state = 52
             self.match(PypefitterParser.LBRACE)
-            self.state = 48
+            self.state = 56
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             while _la==PypefitterParser.ON_ENTER or _la==PypefitterParser.ON_EXIT:
-                self.state = 45
+                self.state = 53
                 self.event_decl()
-                self.state = 50
+                self.state = 58
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
 
-            self.state = 54
+            self.state = 62
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             while _la==PypefitterParser.STAGE:
-                self.state = 51
+                self.state = 59
                 self.stage()
-                self.state = 56
+                self.state = 64
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
 
-            self.state = 57
+            self.state = 65
             self.match(PypefitterParser.RBRACE)
         except RecognitionException as re:
             localctx.exception = re

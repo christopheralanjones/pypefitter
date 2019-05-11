@@ -38,6 +38,9 @@ class PypefitterCLIRequestBuilder(PypefitterRequestBuilder):
         parser.add_argument('-f', '--file', dest='file', action='store',
                             default=f"{pf_default_file}",
                             help='The file containing the pypefitter definition.')
+        parser.add_argument('-o', '--out', dest='out', action='store',
+                            default=f"build/pypefitter",
+                            help='The directory where the output will be placed.')
 
         # these will be delegated to the providers to construct
         provider_parsers = parser.add_subparsers()
@@ -47,7 +50,7 @@ class PypefitterCLIRequestBuilder(PypefitterRequestBuilder):
             provider.get_cli_builder().assemble(**{'provider': provider, 'parser': provider_parser})
 
         # set some defaults
-        parser.set_defaults(provider='jenkins', action='generate', emitter='jenkinsfile')
+        parser.set_defaults(provider='jenkins', action='generate', emitter='jenkinsfile', out='build/pypefitter')
 
     @classmethod
     def build(cls, **kwargs) -> PypefitterRequest:
@@ -71,7 +74,7 @@ class PypefitterCLIRequestBuilder(PypefitterRequestBuilder):
 
             # assuming we can, we then package everything up
             request: PypefitterRequest = \
-                PypefitterRequest(parsed_args.action, parsed_args.provider, parsed_args.file,
+                PypefitterRequest(parsed_args.action, parsed_args.provider, parsed_args.file, parsed_args.out,
                                   **{'emitter': parsed_args.emitter, 'verbosity': parsed_args.verbosity})
         except SystemExit:
             request: PypefitterRequest = None
@@ -116,6 +119,7 @@ def main(argv: List[str] = None) -> int:
     logger.info('-' * 80)
     logger.info(f"Provider.......{request.provider}")
     logger.info(f"Emitter........{request.emitter}")
+    logger.info(f"Out............{request.out}")
     logger.info(f"Action.........{request.action}")
     logger.info(f"Definition.....{request.file}")
     logger.info('-' * 80)

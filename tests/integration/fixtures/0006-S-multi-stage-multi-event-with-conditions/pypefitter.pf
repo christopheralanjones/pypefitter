@@ -1,6 +1,4 @@
 pypefitter pypeline {
-  on_enter / s1
-
   stage s1 {
     on_exit / s2
   }

@@ -5,7 +5,7 @@ grammar Pypefitter;
 ** PIPELINE
 */
 pypefitter
-    : PYPEFITTER stage_body
+    : PYPEFITTER name=Identifier LBRACE stage* RBRACE
     ;
 
 event_decl

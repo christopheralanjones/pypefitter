@@ -125,7 +125,7 @@ class InitAction(CommonAction):
             The result of the request being performed.
         """
         pypefitter.logger.info(f"Write of default pypefitter declaration started")
-        with open(f"{request.file}", 'w') as pf_file:
+        with open(f"{request.out}/{request.file}", 'w') as pf_file:
             pf_file.write('pypefitter pypeline { }')
             pf_file.close()
         pypefitter.logger.info(f"Write of default pypefitter declaration complete")
@@ -156,9 +156,9 @@ class PypefitterGenerateActionCLIRequestBuilder(PypefitterActionCLIRequestBuilde
 
         # finish defining the arguments
         generate_parser = action_parser.add_parser(action.get_plugin_id())
-        generate_parser.set_defaults(action=action.get_plugin_id(), emitter=emitters[0].get_plugin_id())
         generate_parser.add_argument('emitter', choices=emitter_names, nargs='?', default=emitters[0].get_plugin_id(),
                                      help='The style of output to be produced')
+        generate_parser.set_defaults(action=action.get_plugin_id(), emitter=emitters[0].get_plugin_id())
 
 
 class GenerateAction(CommonAction):
@@ -208,7 +208,13 @@ class GenerateAction(CommonAction):
         PypefitterResponse
             The result of the request being performed.
         """
-        return ValidateAction().do_action(provider, request)
+        response: PypefitterResponse = ValidateAction().do_action(provider, request)
+        if response.return_code != 200:
+            return response
+        provider: Provider = Provider.get_provider(request.provider)
+        emitter: Emitter = provider.get_emitter(request.emitter)
+        emitter.emit(request)
+        return PypefitterResponse(200, 'OK')
 
 
 class ValidateAction(CommonAction):

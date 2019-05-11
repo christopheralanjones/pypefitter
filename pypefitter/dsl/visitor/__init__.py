@@ -63,7 +63,7 @@ class PypefitterVisitor(AbstractPypefitterVisitor):
         pypefitter.logger.debug(f"Initializing symbol table")
         AbstractPypefitterVisitor.global_symbol_table = SymbolTable()
         pypefitter.logger.debug(f"Pypefitter visitor started")
-        pypeline_name = ctx.stage_body().name.text
+        pypeline_name = ctx.name.text
 
         # add the symbol to the global symbol table and then add the pypeline
         # symbol table to the stack so that the next set of elements can be
@@ -72,10 +72,14 @@ class PypefitterVisitor(AbstractPypefitterVisitor):
             AbstractPypefitterVisitor.global_symbol_table.add_symbol(pypeline_name, SymbolType.PYPELINE)
         AbstractPypefitterVisitor.symbol_table_stack.append(pypeline_symbol.symbol_table)
 
-        # look for events and nested stages
-        for event in ctx.stage_body().event_decl():
-            self.visitEvent_decl(event)
-        for stage in ctx.stage_body().stage():
+        # there will always be two default stages: start and end. the start
+        # stage is where processing always begins and the end stage is where
+        # it always ends. these are provided as a convenience.
+        AbstractPypefitterVisitor.symbol_table_stack[-1].add_symbol('start', SymbolType.STAGE)
+        AbstractPypefitterVisitor.symbol_table_stack[-1].add_symbol('end', SymbolType.STAGE)
+
+        # parse the stages and pop the stack
+        for stage in ctx.stage():
             self.visitStage_body(stage.stage_body())
 
         AbstractPypefitterVisitor.symbol_table_stack.pop()

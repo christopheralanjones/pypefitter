@@ -15,7 +15,7 @@ def test_provider_helper_reads_real_file(pf_real_file: Path, pf_definition: str)
 
 
 def test_provider_helper_does_not_read_missing_file(pf_fake_file):
-    with pytest.raises(PypefitterError):
+    with pytest.raises(FileNotFoundError):
         PypefitterParserHelper.read_pypefitter_file(pf_fake_file)
 
 

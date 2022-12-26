@@ -8,7 +8,7 @@ coverage = "==4.5.3"
 flake8 = "==3.7.7"
 pytest = "==4.4.0"
 pytest-cov = "==2.6.1"
-wheel = "==0.33.1"
+wheel = "==0.38.1"
 
 [packages]
 antlr4-python3-runtime = "==4.7.2"
